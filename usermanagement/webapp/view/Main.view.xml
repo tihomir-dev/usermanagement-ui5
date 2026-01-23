@@ -1,0 +1,74 @@
+<mvc:View
+    controllerName="com.customer.usermanagement.usermanagement.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:w="sap.ui.integration.widgets"
+    xmlns:cssgrid="sap.ui.layout.cssgrid">
+
+    <Page id="page" title="{i18n>title}">
+        <customHeader>
+            <OverflowToolbar id="toolabr" height="80px">
+                <Title id="title2" text="User and Group Management" level="Auto" titleStyle="H3"/>
+                <ToolbarSpacer id="toolbarspaver"/>
+                <Avatar
+                    id="avatar" 
+                    initials="{userModel>/initials}" 
+                    displaySize="S"
+                    backgroundColor="Accent6"
+                    class="sapUiMediumMarginEnd"
+                    press="onPressAvatar"/>
+            </OverflowToolbar>
+        </customHeader>   
+
+        <content>
+            <VBox id="sdsdsaa" class="sapUiLargeMarginTop">
+                <f:GridContainer id="gridContainer" class="sapUiSmallMargin">
+                    <f:layout>
+                        <f:GridContainerSettings
+                            id="ddd"
+                            rowSize="5rem" 
+                            columnSize="5rem" 
+                            gap="1rem"/>
+                    </f:layout>
+                    <f:layoutS>
+                        <f:GridContainerSettings 
+                            id="dddds"
+                            rowSize="5rem" 
+                            columnSize="5rem" 
+                            gap="0.5rem"/>
+                    </f:layoutS>
+
+                    <!-- Users Card -->
+                    <w:Card 
+                        id="userCard"
+                        manifest="model/cards/usersCard.json"
+                        action=".onCardAction"
+                        manifestReady=".onUserCardReady">
+                        <w:layoutData>
+                            <f:GridContainerItemLayoutData 
+                                id="gridUserslay"
+                                rows="10" 
+                                columns="4"/>
+                        </w:layoutData>
+                    </w:Card>
+
+                    <!-- Groups Card -->
+                    <w:Card 
+                        id="groupCard"
+                        manifest="model/cards/groupsCard.json"
+                        action=".onCardAction">
+                        <w:layoutData>
+                            <f:GridContainerItemLayoutData 
+                                id="gridGroupsLay"
+                                rows="10" 
+                                columns="4"/>
+                        </w:layoutData>
+                    </w:Card>
+                </f:GridContainer>
+            </VBox>
+        </content> 
+    </Page>
+</mvc:View>

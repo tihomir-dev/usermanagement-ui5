@@ -1,0 +1,155 @@
+<mvc:View displayBlock="true" controllerName="com.customer.usermanagement.usermanagement.controller.DetailUsers" height="100%"
+		xmlns="sap.uxap"
+		xmlns:mvc="sap.ui.core.mvc"
+		xmlns:m="sap.m"
+		xmlns:core="sap.ui.core"
+		xmlns:f="sap.f"
+		xmlns:form="sap.ui.layout.form">
+
+	<ObjectPageLayout id="ObjectPageLayout"
+					 showTitleInHeaderContent="true"
+					alwaysShowContentHeader="false"
+					preserveHeaderStateOnScroll="false"
+					headerContentPinnable="true"
+					isChildPage="true"
+					upperCaseAnchorBar="false">
+				<headerTitle>
+					<ObjectPageDynamicHeaderTitle id="opdh1">
+						<expandedHeading>
+							<m:Title id="title5"  text="{userModel>/firstName} {userModel>/lastName}" wrapping="true" class="sapUiSmallMarginEnd"/>
+						</expandedHeading>
+
+						<snappedHeading>
+							<m:HBox id="hbxo2" wrap="NoWrap" alignItems="Center" class="sapUiTinyMarginEnd">
+								<m:VBox id="vbox2" wrap="Wrap">
+									<m:Title id="title3" text="{userModel>/firstName} {userModel>/lastName}" wrapping="true" />
+									<m:Label id="labble" text="{userModel>/id}" wrapping="true" />
+								</m:VBox>
+							</m:HBox>
+						</snappedHeading>
+
+						<navigationActions>
+    						<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{userModel>/actionButtonsInfo/midColumn/fullScreen}"/>
+    						<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{userModel>/actionButtonsInfo/midColumn/exitFullScreen}"/>
+    						<m:OverflowToolbarButton id="oflbuttn" type="Transparent" icon="sap-icon://decline" press="handleClose" tooltip="Close middle column" visible="{userModel>/actionButtonsInfo/midColumn/closeColumn}"/>
+						</navigationActions>
+
+						<actions>
+							<m:Button
+									id="editButton"
+									text="Edit"
+									type="Emphasized"
+									press="handleEdit"
+									visible="{= !${userModel>/isEditMode}}"/>
+							<m:Button
+									id="saveButton"
+									text="Save"
+									type="Transparent"
+									press="handleSave"
+									visible="{userModel>/isEditMode}"/>
+							<m:Button
+									id="cancleButton"
+									text="Cancel"
+									press="handleCancel"
+									type="Transparent"
+									visible="{userModel>/isEditMode}"/>
+							
+							
+							<m:Button
+									id="deleleButton"
+									text="Delete"
+									type="Transparent"/>
+							
+						</actions>
+					
+
+						
+
+					</ObjectPageDynamicHeaderTitle>
+				</headerTitle>
+
+				<headerContent>
+					<m:FlexBox id="fxbox1" wrap="Wrap" fitContainer="true" alignItems="Stretch">
+						
+						<m:VBox id="bxvo4" justifyContent="Center" class="sapUiSmallMarginEnd">
+							<m:Label id="ddds" text="SCIM ID"/>
+							<m:Text id="text7" text="{userModel>/id}"/>
+						</m:VBox>
+						<m:VBox id="sdsdsdsd" justifyContent="Center" class="sapUiSmallMarginEnd">
+							<m:Label id="sdsfdsfsf" text="Staus"/>
+							<m:ObjectStatus id="sdsdsdsdsd" text="{userModel>/userStatus}" state="{= ${userModel>/userStatus} === 'ACTIVE' ? 'Success' : 'Error'}"/>
+						</m:VBox>
+						
+					</m:FlexBox>
+				</headerContent>
+
+		<sections>
+			<ObjectPageSection id="objpg1" title="User Details">
+				<subSections>
+					<ObjectPageSubSection id="personalSubSection" title="Personal">
+                <blocks>
+                    <form:SimpleForm id="personalForm"
+                        maxContainerCols="3"
+                        editable="{userModel>/isEditMode}"
+                        layout="ResponsiveGridLayout"
+                        labelSpanL="4"
+                        labelSpanM="4"
+                        emptySpanL="0"
+                        emptySpanM="0"
+                        columnsL="3"
+                        columnsM="2">
+                        <form:content>
+                            <!-- Personal Column 1 -->
+                            <m:Label id="label1" text="User ID"/>
+                            <m:Input id="input1" value="{userModel>/id}" editable="false"/>
+                            
+                            <m:Label id="label2" text="Status"/>
+                            <m:ComboBox id="statusCombo" value="{userModel>/userStatus}" editable="{userModel>/isEditMode}">
+                                <core:Item id="item1" key="ACTIVE" text="ACTIVE"/>
+                                <core:Item id="item2" key="INACTIVE" text="INACTIVE"/>
+                            </m:ComboBox>
+                            
+                            <m:Label id="label3" text="User Type"/>
+                            <m:ComboBox id="userTypeCombo" value="{userModel>/userType}" editable="{userModel>/isEditMode}">
+                                <core:Item id="item3" key="Employee" text="Employee"/>
+                                <core:Item id="item4" key="Contractor" text="Partner"/>
+                                <core:Item id="item5" key="Admin" text="External"/>
+                            </m:ComboBox>
+                            
+                            
+                            <m:Label id="label5" text="Valid From"/>
+                            <m:DatePicker id="dp1" value="{userModel>/validFrom}" editable="{userModel>/isEditMode}"/>
+                            
+                            <m:Label id="label6" text="Valid To"/>
+                            <m:DatePicker id="dp2" value="{userModel>/validTo}" editable="{userModel>/isEditMode}"/>
+                            
+                            <!-- Address Column -->
+                            <m:Label id="label7" text="City"/>
+                            <m:Input id="Input4" value="{userModel>/city}" editable="{userModel>/isEditMode}"/>
+                            
+                            
+                            <m:Label id="label9" text="Country/Region"/>
+                            <m:Input id="inp3" value="{userModel>/country}" editable="{userModel>/isEditMode}"/>
+                            
+                            
+                            
+                            <m:Label id="labe11" text="First Name"/>
+                            <m:Input id="inp4" value="{userModel>/firstName}" editable="{userModel>/isEditMode}"/>
+                            
+                            <m:Label id="label44" text="Last Name"/>
+                            <m:Input id="ladbe11" value="{userModel>/lastName}" editable="{userModel>/isEditMode}"/>
+                            
+                            <m:Label id="labee11" text="Login Name"/>
+                            <m:Input id="ladsbe11" value="{userModel>/loginName}" editable="{userModel>/isEditMode}"/>
+
+                        </form:content>
+                    </form:SimpleForm>
+                </blocks>
+            </ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+
+			
+		</sections> 
+	</ObjectPageLayout>
+</mvc:View>

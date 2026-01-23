@@ -1,0 +1,92 @@
+<mvc:View displayBlock="true" controllerName="com.customer.usermanagement.usermanagement.controller.Users" height="100%"
+	  xmlns="sap.m"
+	  xmlns:f="sap.f"
+	  xmlns:mvc="sap.ui.core.mvc">
+	<f:DynamicPage id="dynamicPageId"
+				   toggleHeaderOnTitleClick="false">
+	
+<f:title>
+    <f:DynamicPageTitle id="dynamicTitle1">
+        <f:heading>
+            <VBox id="vbox1">
+                <Title id="title1" text="Users ({allUsersModel>/total})"/>
+                <HBox id="hbox1" class="sapUiSmallMarginTop">
+                    <ObjectStatus 
+                        id="activeStatus"
+                        text="Active Users: {allUsersModel>/active}"
+                        state="Success"
+                        class="sapUiMediumMarginEnd"/>
+                    <ObjectStatus 
+                        id="inactiveStatus"
+                        text="Inactive Users: {allUsersModel>/inactive}"
+                        state="Error"/>
+                </HBox>
+            </VBox>
+        </f:heading>
+    </f:DynamicPageTitle>
+</f:title>
+
+
+
+		<f:content>
+			<Table
+				id="productsTable"
+				mode="SingleSelectMaster"
+				itemPress=".onListItemPress"
+				inset="false"
+				items="{
+					path: 'allUsersModel>/users',
+					sorter: {
+						path: 'FIRST_NAME'
+					}
+				}"
+				class="sapFDynamicPageAlignContent"
+				width="auto">
+				<headerToolbar>
+					<OverflowToolbar id="overfltolb">
+						<ToolbarSpacer id="toolbarspacer"/>
+						<SearchField id="sfield" search="onSearch" width="17.5rem"/>
+						<OverflowToolbarButton id="createUser" icon="sap-icon://add" type="Transparent" press="onCreate"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="col1">
+						<Text id="txt1" text="First Name" />
+					</Column>
+					<Column id="col2">
+						<Text id="txt3" text="Last Name" />
+					</Column>
+					<Column id="col3">
+						<Text id="txt4" text="Email" />
+					</Column>
+					<Column id="col4">
+						<Text id="txt5" text="Login Name" />
+					</Column>
+					<Column id="col5">
+						<Text id="txt6" text="ID" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem id="colListItem" type="Navigation">
+						<cells>
+							<Text id="colText1" text="{allUsersModel>FIRST_NAME}"/>
+							<Text id="colText2" text="{allUsersModel>LAST_NAME}"/>
+							<Text id="colText3" text="{allUsersModel>EMAIL}"/>
+							<Text id="colText4" text="{allUsersModel>LOGIN_NAME}"/>
+							<Text id="colText5" text="{allUsersModel>ID}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+
+		<!-- DynamicPage Footer -->
+		<f:footer>
+			<OverflowToolbar id="footer">
+				<ToolbarSpacer id="wwq"/>
+				<Button id="ac" type="Accept" text="Accept"/>
+				<Button id="rej" type="Reject" text="Reject"/>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+</mvc:View>

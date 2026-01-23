@@ -1,0 +1,22 @@
+applications:
+  - name: usermanagement-approuter
+    path: .
+    memory: 256M
+    buildpack: nodejs_buildpack
+    command: node node_modules/@sap/approuter/approuter.js
+    services:
+      - apiservice-xsuaa
+    env:
+      destinations: >
+        [
+          {
+            "name": "apiservice-destination",
+            "url": "https://945d5126trial-dev-apiservice-srv.cfapps.us10-001.hana.ondemand.com",
+            "forwardAuthToken": true
+          },
+          {
+            "name": "ui5",
+            "url": "https://ui5.sap.com",
+            "forwardAuthToken": false
+          }
+        ]

@@ -1,0 +1,42 @@
+{
+  "sap.app": {
+    "id": "com.customer.usermanagement.usermanagement.cards.groups",
+    "type": "card"
+  },
+  "sap.card": {
+    "type": "Object",
+    
+    "actions": [
+      {
+        "type": "Custom",
+        "parameters": {
+        "action": "navigateToGroups"
+    }
+      }
+    ],
+    "data": {
+      "json": {
+        "totalGroups": 0
+      }
+    },
+    "header": {
+      "icon": {
+        "src": "sap-icon://group"
+      },
+      "title": "Groups"
+    },
+    "content": {
+      "groups": [
+        {
+          "title": "Statistics",
+          "items": [
+            {
+              "label": "Total Groups",
+              "value": "{/totalGroups}"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

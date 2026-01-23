@@ -1,0 +1,17 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Popover
+		id="myPopover"
+		title="{userModel>/name}"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer centeredTitle"
+        contentHeight="70px"
+        contentWidth="230px"
+		placement="Bottom"
+		initialFocus="emailButton">
+		<VBox id="dfdsf" class="sapUiSmallMargin">
+			<Text id="dsfsfdsf" text="{userModel>/email}" class="sapUiMediumMarginBottom"/>
+		</VBox>
+		
+	</Popover>
+</core:FragmentDefinition>

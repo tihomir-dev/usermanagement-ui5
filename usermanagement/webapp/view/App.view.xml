@@ -1,0 +1,13 @@
+<mvc:View
+  controllerName="com.customer.usermanagement.usermanagement.controller.App"
+  displayBlock="true"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:f="sap.f">
+
+  <!-- Important: wrap FCL inside m.App -->
+  <App id="App">
+    <f:FlexibleColumnLayout id="fcl" />
+  </App>
+
+</mvc:View>
