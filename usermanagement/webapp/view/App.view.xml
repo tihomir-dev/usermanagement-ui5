@@ -1,13 +1,87 @@
 <mvc:View
-  controllerName="com.customer.usermanagement.usermanagement.controller.App"
-  displayBlock="true"
-  xmlns:mvc="sap.ui.core.mvc"
-  xmlns="sap.m"
-  xmlns:f="sap.f">
+	controllerName="com.customer.usermanagement.usermanagement.controller.App"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:tnt="sap.tnt"
+	xmlns:f="sap.f"
+	height="100%">
+	<tnt:ToolPage id="toolPage">
+		<!-- Header Section -->
+		<tnt:header>
+			<tnt:ToolHeader>
+				<Image 
+					height="1.5rem"
+					class="sapUiSmallMarginBegin"
+					src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" 
+					alt="SAP Logo"/>
+				
+				<Title 
+					level="H1" 
+					text="{i18n>headerTitle}" 
+					wrapping="false" 
+					id="productName">
+					<layoutData>
+						<OverflowToolbarLayoutData priority="Disappear"/>
+					</layoutData>
+				</Title>
+				
+				<ToolbarSpacer />
+				
+				<OverflowToolbarButton 
+					id="settingsBtn"
+					icon="sap-icon://action-settings" 
+					type="Transparent" 
+					text="{i18n>settingsButton}"
+					press="onSettingsPress"/>
+				
+				<tnt:ToolHeaderUtilitySeparator/>
+				
+				<ToolbarSpacer width="1.125rem"/>
+				
+				<Avatar 
+					id="userAvatar"
+					initials="{userModel>/initials}" 
+					displaySize="XS" 
+					backgroundColor="Accent6"
+					class="sapUiTinyMarginEnd"
+					press="onPressAvatar"
+					tooltip="Profile"/>
+			</tnt:ToolHeader>
+		</tnt:header>
 
-  <!-- Important: wrap FCL inside m.App -->
-  <App id="App">
-    <f:FlexibleColumnLayout id="fcl" />
-  </App>
+		<!-- Sub Header with Tab Navigation -->
+		<tnt:subHeader>
+			<tnt:ToolHeader>
+				<IconTabHeader
+					id="mainTabHeader"
+					selectedKey="{userModel>/selectedKey}"
+					select=".onTabSelect"
+					mode="Inline">
+					<items>
+						<IconTabFilter 
+							text="{i18n>homePage}" 
+							key="home" 
+							icon="sap-icon://home"/>
+						<IconTabFilter 
+							text="{i18n>usersPage}" 
+							key="users" 
+							icon="sap-icon://person-placeholder"/>
+						<IconTabFilter 
+							text="{i18n>groupsPage}" 
+							key="groups" 
+							icon="sap-icon://group"/>
+					</items>
+				</IconTabHeader>
+			</tnt:ToolHeader>
+		</tnt:subHeader>
 
+		<!-- Main Content - Let Router Handle This -->
+		<tnt:mainContents>
+			<f:FlexibleColumnLayout id="fcl"
+        layout="{layout>/layout}"
+        backgroundDesign="Solid"
+        class="sapUiResponsiveContentPadding"/>
+		</tnt:mainContents>
+	</tnt:ToolPage>
 </mvc:View>

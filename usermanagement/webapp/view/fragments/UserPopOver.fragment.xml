@@ -5,12 +5,20 @@
 		id="myPopover"
 		title="{userModel>/name}"
 		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer centeredTitle"
-        contentHeight="70px"
+        contentHeight="auto"
         contentWidth="230px"
 		placement="Bottom"
 		initialFocus="emailButton">
 		<VBox id="dfdsf" class="sapUiSmallMargin">
 			<Text id="dsfsfdsf" text="{userModel>/email}" class="sapUiMediumMarginBottom"/>
+			<Button 
+				id="logoutButton"
+				text="Sign Out"
+				type="Transparent"
+				icon="sap-icon://log"
+				width="auto"
+				press=".onLogout"
+				class="sapUiMediumMarginTop"/>
 		</VBox>
 		
 	</Popover>

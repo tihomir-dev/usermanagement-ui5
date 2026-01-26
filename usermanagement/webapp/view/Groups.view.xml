@@ -1,61 +1,51 @@
-<mvc:View id="Groups" displayBlock="true" controllerName="com.customer.usermanagement.usermanagement.controller.Groups" height="100%"
-		xmlns="sap.uxap"
-		xmlns:mvc="sap.ui.core.mvc"
-		xmlns:m="sap.m"
-		xmlns:f="sap.f"
-		xmlns:form="sap.ui.layout.form">
+<mvc:View 
+	displayBlock="true" 
+	controllerName="com.customer.usermanagement.usermanagement.controller.Groups" 
+	height="100%"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
 
-	 <ObjectPageLayout id="ObjectPageLayout1"
-					 showTitleInHeaderContent="true"
-					alwaysShowContentHeader="false"
-					preserveHeaderStateOnScroll="false"
-					headerContentPinnable="true"
-					isChildPage="true"
-					upperCaseAnchorBar="false">
-				<headerTitle>
-					<ObjectPageDynamicHeaderTitle id="objDyHeader">
-						<expandedHeading>
-							<m:Title id="titleid" text="Test Groups" wrapping="true" class="sapUiSmallMarginEnd"/>
-						</expandedHeading>
-
-						<snappedHeading>
-							
-						</snappedHeading>
-
-						<navigationActions>
-							
-						</navigationActions>
-
-					
-
-					</ObjectPageDynamicHeaderTitle>
-				</headerTitle>
-
-				<headerContent>
-					
-				</headerContent>
-
-		<sections>
-			<ObjectPageSection id="objPgSec" title="General Information">
-				<subSections>
-					<ObjectPageSubSection id="subsc">
-						<blocks>
-							
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-
-			<ObjectPageSection id="subsc2" title="Suppliers">
-				<subSections>
-					<ObjectPageSubSection id="objpseubs3">
-						<blocks>
-							
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-		</sections>
-	</ObjectPageLayout>
+	<Table
+		id="groupsTable"
+		mode="SingleSelectMaster"
+		itemPress=".onListItemPress"
+		inset="false"
+		items="{groupsModel>/groups}"
+		width="auto">
+		
+		<headerToolbar>
+			<OverflowToolbar id="groupsToolbar">
+				<ToolbarSpacer/>
+				<SearchField 
+					id="groupSearchField" 
+					search=".onSearch" 
+					width="17.5rem"
+					placeholder="Search groups..."/>
+				<OverflowToolbarButton 
+					id="createGroupBtn"
+					icon="sap-icon://add" 
+					type="Transparent" 
+					press=".onCreate"
+					tooltip="Create new group"/>
+			</OverflowToolbar>
+		</headerToolbar>
+		
+		<columns>
+			<Column id="cole1"><Text text="{i18n>groupNameCol}" /></Column>
+			<Column id="colw2"><Text text="{i18n>groupDescriptionCol}" /></Column>
+			<Column id="col3e"><Text text="{i18n>groupMembersCol}" /></Column>
+		</columns>
+		
+		<items>
+			<ColumnListItem id="groupListItem" type="Navigation">
+				<cells>
+					<Text text="{groupsModel>name}"/>
+					<Text text="{groupsModel>description}"/>
+					<Text text="{groupsModel>memberCount}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
 
 </mvc:View>

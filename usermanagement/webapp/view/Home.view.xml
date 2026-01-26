@@ -1,0 +1,12 @@
+<mvc:View 
+	displayBlock="true" 
+	controllerName="com.customer.usermanagement.usermanagement.controller.Home" 
+	height="100%"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
+
+	
+
+</mvc:View>

@@ -1,3 +1,11 @@
-.centeredTitle .sapMPopoverHeader .sapMTitle {
-	text-align: center;
+.titleWithMargin {
+    margin-left: 1.5rem; /* or use padding-left */
+}
+.headerSubTitle {
+    font-size: 0.875rem;
+    color: #6a6d70;
+	margin-left: 1.5rem;
+}
+.centerAvatar {
+    align-self: center;
 }

@@ -5,7 +5,7 @@ sap.ui.define([
 
     return {
 
-        formatDateToISO: function(dateString) {
+        formatDateFromISO: function(dateString) {
             if (!dateString) return "";
             
             try {

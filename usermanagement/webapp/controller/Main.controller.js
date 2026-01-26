@@ -9,6 +9,7 @@ sap.ui.define([
 
     return Controller.extend("com.customer.usermanagement.usermanagement.controller.Main", {
         onInit() {
+            
             var that = this;
             this.oRouter = that.getOwnerComponent().getRouter();
             const userModel = new JSONModel({
@@ -95,9 +96,12 @@ sap.ui.define([
 
     } catch (error) {
         console.error("Failed to load group data:", error);
-        // Optionally, set default/fallback data to prevent further crashes
     }
-},
+    },
+    onLogout: function() {
+   
+        window.location.href = "/do/logout";
+    },
 
 
         
