@@ -22,8 +22,7 @@ sap.ui.define([
             this.getView().setModel(allUsersModel, "allUsersModel");
             this.loadAllUsers();
 
-            //  routing for user detail
-            //this.oRouter.getRoute("userDetail").attachPatternMatched(this._onUserDetailMatched, this);
+           
         },
 
         loadAllUsers: async function () {
@@ -54,29 +53,37 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Handle search in users table
-         */
-        onSearch: function (oEvent) {
+        
+        onSearch: async function (oEvent) {
             var sSearchValue = oEvent.getParameter("query").toLowerCase();
             var allUsersModel = this.getView().getModel("allUsersModel");
             var aUsers = allUsersModel.getProperty("/users");
+            var oView = this.getView();
 
             if (!sSearchValue) {
                 allUsersModel.setProperty("/filteredUsers", aUsers);
                 return;
             }
 
-            var aFiltered = aUsers.filter(user => {
-                return (
-                    (user.FIRST_NAME && user.FIRST_NAME.toLowerCase().includes(sSearchValue)) ||
-                    (user.LAST_NAME && user.LAST_NAME.toLowerCase().includes(sSearchValue)) ||
-                    (user.EMAIL && user.EMAIL.toLowerCase().includes(sSearchValue)) ||
-                    (user.LOGIN_NAME && user.LOGIN_NAME.toLowerCase().includes(sSearchValue))
-                );
-            });
+            oView.setBusy(true);
 
-            allUsersModel.setProperty("/filteredUsers", aFiltered);
+            try {
+                var searchData = await fetch(`/api/users?search=${encodeURIComponent(sSearchValue)}`);
+
+                if (!searchData.ok) {
+                    throw new Error(`HTTP error! status: ${searchData.status}`);
+                }
+
+                var dbSearchResponse = await searchData.json();
+
+
+                allUsersModel.setProperty("/filteredUsers", dbSearchResponse.items);
+            } catch (error) {
+                console.error("Search error:", error);
+                MessageToast.show("Error searching users");
+            } finally {
+                oView.setBusy(false);  
+            }
         },
 
         onListItemPress: async function (oEvent) {
@@ -85,7 +92,7 @@ sap.ui.define([
                 const oCtx = oSelectedItem.getBindingContext("allUsersModel");
                 const userId = oCtx.getProperty("ID");
 
-                // Simple navigation without helper
+              
                 this.oRouter.navTo("userDetail", {
                     userId: userId,
                     layout: "TwoColumnsBeginExpanded"
@@ -96,25 +103,8 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Handle user detail route match 
-         */
-        /* _onUserDetailMatched: function (oEvent) {
-            var userId = oEvent.getParameter("arguments").userId;
-            var layout = oEvent.getParameter("arguments").layout;
-
-            // Get FCL if available
-            var oFCL = this.byId("fcl");
-            if (oFCL) {
-                oFCL.setLayout(layout);
-            }
-        }, */
-
-        /**
-         * Create new user DD THIS
-         */
         onCreate: function () {
-            // Navigate to create user or open dialog
+           
             this.oRouter.navTo("userCreate");
         }
     });

@@ -84,22 +84,20 @@
 		</headerContent>
 
 		<sections>
-			<ObjectPageSection id="objpg1" title="{i18n>detailsSectionTitle}">
+			<ObjectPageSection id="objpg1" title="{i18n>detailsSectionTitle}" titleUppercase="false">
 				<subSections>
-					<ObjectPageSubSection id="personalSubSection" title="{i18n>personalSubSectionTitle}">
+					<ObjectPageSubSection id="personalSubSection">
 						<blocks>
 							<form:SimpleForm id="personalForm"
 								maxContainerCols="3"
 								editable="{userModel>/isEditMode}"
 								layout="ResponsiveGridLayout"
-								labelSpanL="4"
-								labelSpanM="4"
-								emptySpanL="0"
-								emptySpanM="0"
-								columnsL="3"
+								labelSpanL="3"
+								labelSpanM="3"
+								columnsL="2"
 								columnsM="2">
 								<form:content>
-									<!-- Personal Column 1 -->
+									
 									<m:Label id="label1" text="{i18n>userIdCol}"/>
 									<m:Input id="input1" value="{userModel>/currentUser/ID}" editable="false"/>
 									
@@ -139,6 +137,27 @@
 									
 									<m:Label id="label24" text="{i18n>email}"/>
 									<m:Input id="inp8" value="{userModel>/currentUser/EMAIL}" editable="{userModel>/isEditMode}"/>
+								</form:content>
+							</form:SimpleForm>
+						</blocks>
+					</ObjectPageSubSection>
+				</subSections>
+			</ObjectPageSection>
+			<ObjectPageSection id="objPageSection2" title="{i18n>groupsAssignments}" titleUppercase="false">
+				<subSections>
+					<ObjectPageSubSection id="assignmesntsSubSection">
+						<blocks>
+							<form:SimpleForm id="groupsFsorm"
+								maxContainerCols="3"
+								editable="{userModel>/isEditMode}"
+								layout="ResponsiveGridLayout"
+								labelSpanL="3"
+								labelSpanM="3"
+								columnsL="2"
+								columnsM="2">
+								<form:content>
+								
+									<m:Label id="labelteswt" text="grop test"/>
 								</form:content>
 							</form:SimpleForm>
 						</blocks>

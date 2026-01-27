@@ -42,9 +42,7 @@ sap.ui.define([
             oRouter.getRoute("userDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
-        /**
-         * Handle user detail route match
-         */
+
         _onRouteMatched: async function (oEvent) {
             try {
                 const layout = oEvent.getParameter("arguments").layout;
@@ -59,15 +57,6 @@ sap.ui.define([
                     console.log("Layout applied:", layout);
                 }
 
-                /* const oFCL = this._getFCL();
-
-                if (oFCL && typeof oFCL.setLayout === 'function') {
-                    oFCL.setLayout(layout);
-                    console.log("Layout applied:", layout);
-                } else {
-                    console.warn("FlexibleColumnLayout not found or setLayout not available");
-                } */
-
                 await this._loadUserById(userId);
             } catch (error) {
                 console.error("Error in route matched:", error);
@@ -76,10 +65,6 @@ sap.ui.define([
         },
 
 
-
-        /**
-         * Load user data by ID from API
-         */
         _loadUserById: async function (userId) {
             var oView = this.getView();
             var userModel = this.getView().getModel("userModel");
@@ -93,26 +78,6 @@ sap.ui.define([
 
                 var userData = await response.json();
 
-                // Map API response to model
-                /* userModel.setProperty("/id", userData.ID);
-                userModel.setProperty("/firstName", userData.FIRST_NAME);
-                userModel.setProperty("/loginName", userData.LOGIN_NAME);
-                userModel.setProperty("/email", userData.EMAIL);
-                userModel.setProperty("/lastName", userData.LAST_NAME);
-                userModel.setProperty("/userType", userData.USER_TYPE);
-                userModel.setProperty("/userStatus", userData.STATUS);
-                userModel.setProperty("/validFrom", userData.VALID_FROM);
-                userModel.setProperty("/validTo", userData.VALID_TO);
-                userModel.setProperty("/country", userData.COUNTRY);
-                userModel.setProperty("/company", userData.COMPANY);
-                userModel.setProperty("/city", userData.CITY);
-
-
-                userModel.setProperty("/iasLastModified", userData.IAS_LAST_MODIFIED);
-                userModel.setProperty("/createdAt", userData.CREATED_AT);
-                userModel.setProperty("/updatedAt", userData.UPDATED_AT);
-
- */
                 userModel.setProperty("/currentUser", userData);
 
                 oView.setBusy(false);
@@ -123,9 +88,6 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Reset button states to initial state
-         */
         _resetButtonStates: function () {
             var userModel = this.getView().getModel("userModel");
             userModel.setProperty("/actionButtonsInfo/midColumn/fullScreen", true);
@@ -133,9 +95,6 @@ sap.ui.define([
             userModel.setProperty("/actionButtonsInfo/midColumn/closeColumn", true);
         },
 
-        /**
-         * Update button states for different layouts
-         */
         _updateButtonStates: function (fullScreen, exitFullScreen, closeColumn) {
             var userModel = this.getView().getModel("userModel");
             userModel.setProperty("/actionButtonsInfo/midColumn/fullScreen", fullScreen);
@@ -143,37 +102,7 @@ sap.ui.define([
             userModel.setProperty("/actionButtonsInfo/midColumn/closeColumn", closeColumn);
         },
 
-        /**
-         * Get FCL reference from Users view
-         */
-        /* _getFCL: function () {
-            try {
-                let current = this.getView().getParent();
-
-                // Loop up the hierarchy to find the FlexibleColumnLayout
-                let level = 0;
-                while (current && level < 5) {
-                    console.log(`Checking level ${level}:`, current.getMetadata().getName());
-                    if (current.getMetadata().getName() === 'sap.f.FlexibleColumnLayout') {
-                        console.log("Found FCL at level:", level);
-                        return current;
-                    }
-                    current = current.getParent();
-                    level++;
-                }
-
-                console.error("FCL not found in hierarchy");
-                return null;
-            } catch (error) {
-                console.error("Error getting FCL:", error);
-                return null;
-            }
-        }, */
-
-        /**
-         * Handle full screen button press
-         */
-         handleFullScreen: function () {
+        handleFullScreen: function () {
             var layoutModel = this.getOwnerComponent().getModel("layout");
             if (layoutModel) {
                 layoutModel.setProperty("/layout", "MidColumnFullScreen");
@@ -181,9 +110,6 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Handle exit full screen button press
-         */
         handleExitFullScreen: function () {
             var layoutModel = this.getOwnerComponent().getModel("layout");
             if (layoutModel) {
@@ -192,9 +118,6 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Handle close button press
-         */
         handleClose: function () {
             var layoutModel = this.getOwnerComponent().getModel("layout");
             if (layoutModel) {
@@ -202,21 +125,15 @@ sap.ui.define([
                 this._updateButtonStates(false, false, false);
             }
 
-            // Navigate back to users list
             this.getOwnerComponent().getRouter().navTo("users");
         },
 
-        /**
-         * Handle edit button press - enter edit mode
-         */
         handleEdit: function () {
             var userModel = this.getView().getModel("userModel");
             userModel.setProperty("/isEditMode", true);
         },
 
-        /**
-         * Handle cancel button press - discard changes
-         */
+
         handleCancel: function () {
             var userModel = this.getView().getModel("userModel");
             userModel.setProperty("/isEditMode", false);
@@ -228,14 +145,11 @@ sap.ui.define([
             }
         },
 
-        /**
-         * Handle save button press - save changes to API
-         */
         handleSave: function () {
             var userModel = this.getView().getModel("userModel");
             var userData = userModel.getData();
 
-            // Validate required fields
+
             if (!userData.firstName || !userData.lastName || !userData.email) {
                 MessageToast.show("Please fill in all required fields");
                 return;
@@ -243,7 +157,7 @@ sap.ui.define([
 
             this.getView().setBusy(true);
 
-            // Prepare data for API (camelCase format for PATCH)
+
             var updateData = {
                 firstName: userData.firstName,
                 lastName: userData.lastName,
@@ -264,12 +178,11 @@ sap.ui.define([
                 displayName: userData.displayName
             };
 
-            // Send PATCH request to API
             fetch(`/api/users/${userData.id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " 
+                    "Authorization": "Bearer "
                 },
                 body: JSON.stringify(updateData)
             })
