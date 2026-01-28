@@ -34,6 +34,13 @@
       "csrfProtection": false
     },
     {
+      "source": "^/api/users/([^/]+)/groups$",
+      "target": "/users/$1/groups",
+      "destination": "apiservice-destination",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
       "source": "^/api/groups/sync/?$",
       "target": "/groups/sync",
       "destination": "apiservice-destination",

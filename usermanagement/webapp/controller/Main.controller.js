@@ -26,6 +26,7 @@ sap.ui.define([
             this.loadCurrentUser();
             this.loadUserStats();
             this.loadGroupsStats();
+            
 
             /* var userCard = this.getView().byId("userCard");
             if (userCard) {

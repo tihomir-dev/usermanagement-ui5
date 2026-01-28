@@ -1,0 +1,127 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog 
+        id="createUserDialog" 
+        title="Create New User"
+        contentWidth="600px"
+    >
+        <form:SimpleForm
+            id="createUserForm"
+            maxContainerCols="2"
+            editable="true"
+            layout="ResponsiveGridLayout"
+            labelSpanL="4"
+            labelSpanM="4"
+            columnsL="2"
+            columnsM="1"
+        >
+            <form:content>
+
+                <Label text="First Name" required="true" />
+                <Input
+                    id="createFirstNameInput"
+                    value="{createUserModel>/firstName}"
+                    placeholder="Enter first name"
+                    required="true"
+                />
+
+
+                <Label text="Last Name" required="true" />
+                <Input
+                    id="createLastNameInput"
+                    value="{createUserModel>/lastName}"
+                    placeholder="Enter last name"
+                    required="true"
+                />
+
+                <Label text="Login Name" required="true" />
+                <Input
+                    id="createLoginNameInput"
+                    value="{createUserModel>/loginName}"
+                    placeholder="Enter login name"
+                    required="true"
+                />
+
+
+                <Label text="Email" required="true" />
+                <Input
+                    id="createEmailInput"
+                    value="{createUserModel>/email}"
+                    type="Email"
+                    placeholder="Enter email"
+                    required="true"
+                />
+
+                <Label text="User Type" required="true" />
+                <ComboBox
+                    id="createUserTypeCombo"
+                    selectedKey="{createUserModel>/userType}"
+                    items="{options>/userTypes}"
+                    required="true"
+                >
+                    <core:Item key="{options>key}" text="{options>text}" />
+                </ComboBox>
+
+
+                <Label text="Company" />
+                <Input
+                    id="createCompanyInput"
+                    value="{createUserModel>/company}"
+                    placeholder="Enter company"
+                />
+
+                <Label text="Country" />
+                <Input
+                    id="createCountryInput"
+                    value="{createUserModel>/country}"
+                    valueHelpRequest=".onCountryValueHelp"
+                    showValueHelp="true"
+                    placeholder="Select country"
+                />
+
+                <Label text="City" />
+                <Input
+                    id="createCityInput"
+                    value="{createUserModel>/city}"
+                    placeholder="Enter city"
+                />
+
+                <Label text="Valid From" />
+                <DatePicker
+                    id="createValidFromInput"
+                    value="{createUserModel>/validFrom}"
+                    valueFormat="yyyy-MM-dd"
+                    displayFormat="short"
+                />
+
+                <Label text="Valid To" />
+                <DatePicker
+                    id="createValidToInput"
+                    value="{createUserModel>/validTo}"
+                    valueFormat="yyyy-MM-dd"
+                    displayFormat="short"
+                />
+            </form:content>
+        </form:SimpleForm>
+
+        <beginButton>
+            <Button
+                id="createUserSaveBtn"
+                text="Create"
+                type="Emphasized"
+                press=".onCreateUserSave"
+            />
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="createUserCancelBtn"
+                text="Cancel"
+                press=".onCreateUserCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

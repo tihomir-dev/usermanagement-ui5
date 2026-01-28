@@ -1,72 +1,141 @@
-<mvc:View 
-	displayBlock="true" 
-	controllerName="com.customer.usermanagement.usermanagement.controller.Users" 
-	height="100%"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:core="sap.ui.core">
-
-	<Table
-		id="usersTable"
-		mode="SingleSelectMaster"
-		itemPress=".onListItemPress"
-		inset="false"
-		items="{
-			path: 'allUsersModel>/filteredUsers',
+<mvc:View
+    displayBlock="true"
+    controllerName="com.customer.usermanagement.usermanagement.controller.Users"
+    height="100%"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+>
+    <Table
+        id="usersTable"
+        mode="SingleSelectMaster"
+        itemPress=".onListItemPress"
+        inset="false"
+        items="{
+			path: 'allUsersModel>/users',
 			sorter: {
 				path: 'FIRST_NAME'
 			}
 		}"
-		width="auto">
-		
-		<headerToolbar>
-			<OverflowToolbar id="usersToolbar">
-				<ToolbarSpacer id="toolbarspacer"/>
-				<SearchField 
-					id="userSearchField" 
-					search=".onSearch" 
-					width="17.5rem"
-					placeholder="{i18n>searchPlaceholder}"/>
-				<OverflowToolbarButton 
-					id="createUserBtn"
-					icon="sap-icon://add" 
-					type="Transparent" 
-					press=".onCreate"
-					tooltip="Create new user"/>
-			</OverflowToolbar>
-		</headerToolbar>
-		
-		<columns>
-			<Column id="col1" minScreenWidth="Tablet" demandPopin="true">
-				<Text text="{i18n>firstNameCol}" />
-			</Column>
-			<Column id="col2" minScreenWidth="Tablet" demandPopin="true">
-				<Text text="{i18n>lastNameCol}" />
-			</Column>
-			<Column id="col3" minScreenWidth="Tablet" demandPopin="true">
-				<Text text="{i18n>emailCol}" />
-			</Column>
-			<Column id="col4" minScreenWidth="Tablet" demandPopin="true">
-				<Text text="{i18n>loginNameCol}" />
-			</Column>
-			<Column id="col5" minScreenWidth="Tablet" demandPopin="true">
-				<Text text="{i18n>statusCol}" />
-			</Column>
-		</columns>
-		
-		<items>
-			<ColumnListItem id="userListItem" type="Navigation">
-				<cells>
-					<Text text="{allUsersModel>FIRST_NAME}"/>
-					<Text text="{allUsersModel>LAST_NAME}"/>
-					<Text text="{allUsersModel>EMAIL}"/>
-					<Text text="{allUsersModel>LOGIN_NAME}"/>
-					<ObjectStatus 
-						text="{allUsersModel>STATUS}" 
-						state="{= ${allUsersModel>STATUS} === 'ACTIVE' ? 'Success' : 'Error'}"/>
-				</cells>
-			</ColumnListItem>
-		</items>
-	</Table>
+        width="auto"
+    >
+        <headerToolbar>
+            <OverflowToolbar id="usersToolbar">
+                <ToolbarSpacer id="toolbarspacer" />
 
+                <ComboBox
+                    id="statusFilterCombo"
+                    selectionChange=".onStatusFilterChange"
+                    items="{options>/statuses}"
+                    width="10rem"
+                    placeholder="Status"
+                >
+                    <core:Item
+                        key="{options>key}"
+                        text="{options>text}"
+                    />
+                </ComboBox>
+
+                <ComboBox
+                    id="userTypeFilterCombo"
+                    selectionChange=".onUserTypeFilterChange"
+                    items="{options>/userTypes}"
+                    width="10rem"
+                    placeholder="User Type"
+                >
+                    <core:Item
+                        key="{options>key}"
+                        text="{options>text}"
+                    />
+                </ComboBox>
+
+                <Input
+                    id="countryFilterInput"
+                    valueHelpRequest=".onCountryValueHelp"
+                    width="10rem"
+                    placeholder="Country"
+                    showValueHelp="true"
+                    change="onCountryInputChange"
+                />
+                <SearchField
+                    id="userSearchField"
+                    search=".onSearch"
+                    width="17.5rem"
+                    placeholder="{i18n>searchPlaceholder}"
+                    liveChange="onSearchLiveChange"
+                />
+                <OverflowToolbarButton
+                    id="resetFiltersBtn"
+                    icon="sap-icon://clear-filter"
+                    type="Transparent"
+                    press=".onResetFilters"
+                    tooltip="Reset all filters"
+                />
+                <OverflowToolbarButton
+                    id="createUserBtn"
+                    icon="sap-icon://add-employee"
+                    type="Transparent"
+                    press=".onCreate"
+                    tooltip="Create new user"
+                />
+            </OverflowToolbar>
+        </headerToolbar>
+
+        <columns>
+            <Column
+                id="col1"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>firstNameCol}" />
+            </Column>
+            <Column
+                id="col2"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>lastNameCol}" />
+            </Column>
+            <Column
+                id="col3"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>emailCol}" />
+            </Column>
+            <Column
+                id="col4"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>loginNameCol}" />
+            </Column>
+            <Column
+                id="col5"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+            >
+                <Text text="{i18n>statusCol}" />
+            </Column>
+        </columns>
+
+        <items>
+            <ColumnListItem
+                id="userListItem"
+                type="Navigation"
+            >
+                <cells>
+                    <Text text="{allUsersModel>FIRST_NAME}" />
+                    <Text text="{allUsersModel>LAST_NAME}" />
+                    <Text text="{allUsersModel>EMAIL}" />
+                    <Text text="{allUsersModel>LOGIN_NAME}" />
+                    <ObjectStatus
+                        text="{allUsersModel>STATUS}"
+                        state="{= ${allUsersModel>STATUS} === 'ACTIVE' ? 'Success' : 'Error'}"
+                    />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
 </mvc:View>

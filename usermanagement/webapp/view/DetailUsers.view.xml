@@ -1,169 +1,374 @@
-<mvc:View displayBlock="true" controllerName="com.customer.usermanagement.usermanagement.controller.DetailUsers" height="100%"
-	xmlns="sap.uxap"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:m="sap.m"
-	xmlns:core="sap.ui.core"
-	xmlns:f="sap.f"
-	xmlns:form="sap.ui.layout.form">
+<mvc:View
+    displayBlock="true"
+    controllerName="com.customer.usermanagement.usermanagement.controller.DetailUsers"
+    height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+>
+    <ObjectPageLayout
+        id="ObjectPageLayout"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        useIconTabBar="true"
+        beforeNavigate="onBeforeNavigate"
+        upperCaseAnchorBar="false"
+        sectionChange="onSectionChange"
+    >
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle id="opdh1">
+                <expandedHeading>
+                    <m:Title
+                        id="title5"
+                        text="{= ${userModel>/currentUser/FIRST_NAME} + &quot; &quot; + ${userModel>/currentUser/LAST_NAME}}"
+                        wrapping="true"
+                        class="sapUiSmallMarginEnd"
+                    />
+                </expandedHeading>
 
-	<ObjectPageLayout id="ObjectPageLayout"
-		showTitleInHeaderContent="true"
-		alwaysShowContentHeader="false"
-		preserveHeaderStateOnScroll="false"
-		headerContentPinnable="true"
-		isChildPage="true"
-		upperCaseAnchorBar="false">
-		
-		<headerTitle>
-			<ObjectPageDynamicHeaderTitle id="opdh1">
-				<expandedHeading>
-					<m:Title id="title5" text="{= ${userModel>/currentUser/FIRST_NAME} + &quot; &quot; + ${userModel>/currentUser/LAST_NAME}}" wrapping="true" class="sapUiSmallMarginEnd"/>
-				</expandedHeading>
+                <snappedHeading>
+                    <m:HBox
+                        id="hbxo2"
+                        wrap="NoWrap"
+                        alignItems="Center"
+                        class="sapUiTinyMarginEnd"
+                    >
+                        <m:VBox
+                            id="vbox2"
+                            wrap="Wrap"
+                        >
+                            <m:Title
+                                id="title3"
+                                text="{= ${userModel>/currentUser/FIRST_NAME} + &quot; &quot; + ${userModel>/currentUser/LAST_NAME}}"
+                                wrapping="true"
+                            />
+                            <m:Label
+                                id="labble"
+                                text="{userModel>/currentUser/ID}"
+                                wrapping="true"
+                            />
+                        </m:VBox>
+                    </m:HBox>
+                </snappedHeading>
 
-				<snappedHeading>
-					<m:HBox id="hbxo2" wrap="NoWrap" alignItems="Center" class="sapUiTinyMarginEnd">
-						<m:VBox id="vbox2" wrap="Wrap">
-							<m:Title id="title3" text="{= ${userModel>/currentUser/FIRST_NAME} + &quot; &quot; + ${userModel>/currentUser/LAST_NAME}}" wrapping="true" />
-							<m:Label id="labble" text="{userModel>/currentUser/ID}" wrapping="true" />
-						</m:VBox>
-					</m:HBox>
-				</snappedHeading>
+                <navigationActions>
+                    <m:OverflowToolbarButton
+                        type="Transparent"
+                        icon="sap-icon://full-screen"
+                        press="handleFullScreen"
+                        id="enterFullScreenBtn"
+                        tooltip="{i18n>fullScreenTip}"
+                        visible="{userModel>/actionButtonsInfo/midColumn/fullScreen}"
+                    />
+                    <m:OverflowToolbarButton
+                        type="Transparent"
+                        icon="sap-icon://exit-full-screen"
+                        press="handleExitFullScreen"
+                        id="exitFullScreenBtn"
+                        tooltip="{i18n>exitScreenTip}"
+                        visible="{userModel>/actionButtonsInfo/midColumn/exitFullScreen}"
+                    />
 
-				<navigationActions>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen"
-					 press="handleFullScreen" id="enterFullScreenBtn" 
-					 tooltip="{i18n>fullScreenTip}" visible="{userModel>/actionButtonsInfo/midColumn/fullScreen}"/>
-					<m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen"
+                    <m:OverflowToolbarButton
+                        id="oflbuttn"
+                        type="Transparent"
+                        icon="sap-icon://decline"
+                        press="handleClose"
+                        tooltip="{i18n>closeMidCol}"
+                        visible="{userModel>/actionButtonsInfo/midColumn/closeColumn}"
+                    />
+                </navigationActions>
 
-					 press="handleExitFullScreen" id="exitFullScreenBtn" 
-					 tooltip="{i18n>exitScreenTip}" visible="{userModel>/actionButtonsInfo/midColumn/exitFullScreen}"/>
-					 
-					<m:OverflowToolbarButton id="oflbuttn" type="Transparent"
-					 icon="sap-icon://decline" press="handleClose"
-					  tooltip="{i18n>closeMidCol}" visible="{userModel>/actionButtonsInfo/midColumn/closeColumn}"/>
-				</navigationActions>
+                <actions>
+                    <m:Button
+                        id="editButton"
+                        text="{i18n>edit}"
+                        type="Emphasized"
+                        press="handleEdit"
+                        visible="{= !${userModel>/isEditMode} &amp;&amp; ${userModel>/selectedSection} !== '__xmlview2--objPageSection2'}"
+                        
+                    />
+                    <m:Button
+                        id="saveButton"
+                        text="{i18n>save}"
+                        type="Emphasized"
+                        press="handleSave"
+                        visible="{userModel>/isEditMode}"
+                    />
+                    <m:Button
+                        id="cancelButton"
+                        text="{i18n>cancel}"
+                        type="Transparent"
+                        press="handleCancel"
+                        visible="{userModel>/isEditMode}"
+                    />
+                    <m:Button
+                        id="deleteButton"
+                        text="{i18n>delete}"
+                        type="Transparent"
+                    />
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
 
-				<actions>
-					<m:Button
-						id="editButton"
-						text="{i18n>edit}"
-						type="Emphasized"
-						press="handleEdit"
-						visible="{= !${userModel>/isEditMode}}"/>
-					<m:Button
-						id="saveButton"
-						text="{i18n>save}"
-						type="Emphasized"
-						press="handleSave"
-						visible="{userModel>/isEditMode}"/>
-					<m:Button
-						id="cancelButton"
-						text="{i18n>cancel}"
-						type="Transparent"
-						press="handleCancel"
-						visible="{userModel>/isEditMode}"/>
-					<m:Button
-						id="deleteButton"
-						text="{i18n>delete}"
-						type="Transparent"/>
-				</actions>
-			</ObjectPageDynamicHeaderTitle>
-		</headerTitle>
+        <headerContent>
+            <m:FlexBox
+                id="fxbox1"
+                wrap="Wrap"
+                fitContainer="true"
+                alignItems="Stretch"
+            >
+                <m:VBox
+                    id="bxvo4"
+                    justifyContent="Center"
+                    class="sapUiSmallMarginEnd"
+                >
+                    <m:Label
+                        id="ddds"
+                        text="{i18n>scimId}"
+                    />
+                    <m:Text
+                        id="text7"
+                        text="{userModel>/currentUser/ID}"
+                    />
+                </m:VBox>
+                <m:VBox
+                    id="sdsdsdsd"
+                    justifyContent="Center"
+                    class="sapUiSmallMarginEnd"
+                >
+                    <m:Label
+                        id="sdsfdsfsf"
+                        text="{i18n>statusCol}"
+                    />
+                    <m:ObjectStatus
+                        id="sdsdsdsdsd"
+                        text="{userModel>/currentUser/STATUS}"
+                        state="{= ${userModel>/currentUser/STATUS} === 'ACTIVE' ? 'Success' : 'Error'}"
+                    />
+                </m:VBox>
+            </m:FlexBox>
+        </headerContent>
 
-		<headerContent>
-			<m:FlexBox id="fxbox1" wrap="Wrap" fitContainer="true" alignItems="Stretch">
-				<m:VBox id="bxvo4" justifyContent="Center" class="sapUiSmallMarginEnd">
-					<m:Label id="ddds" text="{i18n>scimId}"/>
-					<m:Text id="text7" text="{userModel>/currentUser/ID}"/>
-				</m:VBox>
-				<m:VBox id="sdsdsdsd" justifyContent="Center" class="sapUiSmallMarginEnd">
-					<m:Label id="sdsfdsfsf" text="{i18n>statusCol}"/>
-					<m:ObjectStatus id="sdsdsdsdsd" text="{userModel>/currentUser/STATUS}" state="{= ${userModel>/currentUser/STATUS} === 'ACTIVE' ? 'Success' : 'Error'}"/>
-				</m:VBox>
-			</m:FlexBox>
-		</headerContent>
+        <sections>
+            <ObjectPageSection
+                id="objpg1"
+                title="{i18n>detailsSectionTitle}"
+                titleUppercase="false"
+            >
+                <subSections>
+                    <ObjectPageSubSection id="personalSubSection">
+                        <blocks>
+                            <form:SimpleForm
+                                id="personalForm"
+                                maxContainerCols="3"
+                                editable="{userModel>/isEditMode}"
+                                layout="ResponsiveGridLayout"
+                                labelSpanL="3"
+                                labelSpanM="3"
+                                columnsL="2"
+                                columnsM="2"
+                            >
+                                <form:content>
+                                    <m:Label
+                                        id="label1"
+                                        text="{i18n>userIdCol}"
+                                    />
+                                    <m:Input
+                                        id="input1"
+                                        value="{userModel>/editUser/ID}"
+                                        editable="false"
+                                    />
 
-		<sections>
-			<ObjectPageSection id="objpg1" title="{i18n>detailsSectionTitle}" titleUppercase="false">
-				<subSections>
-					<ObjectPageSubSection id="personalSubSection">
-						<blocks>
-							<form:SimpleForm id="personalForm"
-								maxContainerCols="3"
-								editable="{userModel>/isEditMode}"
-								layout="ResponsiveGridLayout"
-								labelSpanL="3"
-								labelSpanM="3"
-								columnsL="2"
-								columnsM="2">
-								<form:content>
-									
-									<m:Label id="label1" text="{i18n>userIdCol}"/>
-									<m:Input id="input1" value="{userModel>/currentUser/ID}" editable="false"/>
-									
-									<m:Label id="label2" text="{i18n>statusCol}"/>
-									<m:ComboBox id="statusCombo" value="{userModel>/currentUser/STATUS}" editable="{userModel>/isEditMode}">
-										<core:Item id="item1" key="ACTIVE" text="{i18n>activeStatus}"/>
-										<core:Item id="item2" key="INACTIVE" text="{i18n>inactiveStatus}"/>
-									</m:ComboBox>
-									
-									<m:Label id="label3" text="{i18n>userTypeLabel}"/>
-									<m:ComboBox id="userTypeCombo" value="{userModel>/currentUser/USER_TYPE}" editable="{userModel>/isEditMode}">
-										<core:Item id="item3" key="Employee" text="{i18n>employeeItem}"/>
-										<core:Item id="item4" key="Contractor" text="{i18n>partnerItem}"/>
-										<core:Item id="item5" key="Admin" text="{i18n>externalEmployeeItem}"/>
-									</m:ComboBox>
-									
-									<m:Label id="label5" text="{i18n>validFrom}"/>
-									<m:DatePicker id="dp1" value="{userModel>/currentUser/VALID_FROM}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="label6" text="{i18n>validTo}"/>
-									<m:DatePicker id="dp2" value="{userModel>/currentUser/VALID_TO}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="label7" text="{i18n>city}"/>
-									<m:Input id="Input4" value="{userModel>/currentUser/CITY}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="label9" text="{i18n>region}"/>
-									<m:Input id="inp3" value="{userModel>/currentUser/COUNTRY}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="labe11" text="{i18n>firstNameCol}"/>
-									<m:Input id="inp4" value="{userModel>/currentUser/FIRST_NAME}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="label44" text="{i18n>lastNameCol}"/>
-									<m:Input id="ladbe11" value="{userModel>/currentUser/LAST_NAME}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="labee11" text="{i18n>loginNameCol}"/>
-									<m:Input id="ladsbe11" value="{userModel>/currentUser/LOGIN_NAME}" editable="{userModel>/isEditMode}"/>
-									
-									<m:Label id="label24" text="{i18n>email}"/>
-									<m:Input id="inp8" value="{userModel>/currentUser/EMAIL}" editable="{userModel>/isEditMode}"/>
-								</form:content>
-							</form:SimpleForm>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-			<ObjectPageSection id="objPageSection2" title="{i18n>groupsAssignments}" titleUppercase="false">
-				<subSections>
-					<ObjectPageSubSection id="assignmesntsSubSection">
-						<blocks>
-							<form:SimpleForm id="groupsFsorm"
-								maxContainerCols="3"
-								editable="{userModel>/isEditMode}"
-								layout="ResponsiveGridLayout"
-								labelSpanL="3"
-								labelSpanM="3"
-								columnsL="2"
-								columnsM="2">
-								<form:content>
-								
-									<m:Label id="labelteswt" text="grop test"/>
-								</form:content>
-							</form:SimpleForm>
-						</blocks>
-					</ObjectPageSubSection>
-				</subSections>
-			</ObjectPageSection>
-		</sections>
-	</ObjectPageLayout>
+                                    <m:Label
+                                        id="label2"
+                                        text="{i18n>statusCol}"
+                                    />
+                                    <m:ComboBox
+                                        id="statusCombo"
+                                        selectedKey="{userModel>/editUser/STATUS}"
+                                        editable="{userModel>/isEditMode}"
+                                        items="{options>/statuses}"
+                                        required="true"
+                                    >
+                                        <core:Item
+                                            key="{options>key}"
+                                            text="{options>text}"
+                                        />
+                                    </m:ComboBox>
+
+                                    <m:Label
+                                        id="label3"
+                                        text="{i18n>userTypeLabel}"
+                                    />
+                                    <m:ComboBox
+                                        id="userTypeCombo"
+                                        selectedKey="{userModel>/editUser/USER_TYPE}"
+                                        editable="{userModel>/isEditMode}"
+                                        items="{options>/userTypes}"
+                                        required="true"
+                                    >
+                                        <core:Item
+                                            key="{options>key}"
+                                            text="{options>text}"
+                                        />
+                                    </m:ComboBox>
+
+                                    <m:Label
+                                        id="label5"
+                                        text="{i18n>validFrom}"
+                                    />
+                                    <m:DatePicker
+                                        id="dp1"
+                                        value="{userModel>/editUser/VALID_FROM}"
+                                        editable="{userModel>/isEditMode}"
+                                    />
+
+                                    <m:Label
+                                        id="label6"
+                                        text="{i18n>validTo}"
+                                    />
+                                    <m:DatePicker
+                                        id="dp2"
+                                        value="{userModel>/editUser/VALID_TO}"
+                                        editable="{userModel>/isEditMode}"
+                                    />
+
+                                    <m:Label
+                                        id="label7"
+                                        text="{i18n>city}"
+                                    />
+                                    <m:Input
+                                        id="Input4"
+                                        value="{userModel>/editUser/CITY}"
+                                        editable="{userModel>/isEditMode}"
+                                    />
+
+                                    <m:Label
+                                        id="label9"
+                                        text="{i18n>region}"
+                                    />
+                                    <m:Input
+                                        id="countryInput"
+                                        value="{userModel>/editUser/COUNTRY}"
+                                        editable="{userModel>/isEditMode}"
+                                        showValueHelp="true"
+                                        valueHelpRequest="onCountryValueHelp"
+                                        placeholder="Select country..."
+                                    />
+
+                                    <m:Label
+                                        id="label10"
+                                        text="{i18n>company}"
+                                    />
+                                    <m:Input
+                                        id="Input10"
+                                        value="{userModel>/editUser/COMPANY}"
+                                        editable="{userModel>/isEditMode}"
+                                    />
+
+                                    <m:Label
+                                        id="labe11"
+                                        text="{i18n>firstNameCol}"
+                                    />
+                                    <m:Input
+                                        id="inp4"
+                                        value="{userModel>/editUser/FIRST_NAME}"
+                                        editable="{userModel>/isEditMode}"
+                                    />
+
+                                    <m:Label
+                                        id="label44"
+                                        text="{i18n>lastNameCol}"
+                                    />
+                                    <m:Input
+                                        id="ladbe11"
+                                        value="{userModel>/editUser/LAST_NAME}"
+                                        editable="{userModel>/isEditMode}"
+                                        required="true"
+                                    />
+
+                                    <m:Label
+                                        id="labee11"
+                                        text="{i18n>loginNameCol}"
+                                    />
+                                    <m:Input
+                                        id="ladsbe11"
+                                        value="{userModel>/editUser/LOGIN_NAME}"
+                                        editable="{userModel>/isEditMode}"
+                                        required="true"
+                                    />
+
+                                    <m:Label
+                                        id="label24"
+                                        text="{i18n>emailCol}"
+                                    />
+                                    <m:Input
+                                        id="inp8"
+                                        value="{userModel>/editUser/EMAIL}"
+                                        editable="{userModel>/isEditMode}"
+                                        required="true"
+                                    />
+                                </form:content>
+                            </form:SimpleForm>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+            <ObjectPageSection
+                id="objPageSection2"
+                title="{i18n>groupsAssignments}"
+                titleUppercase="false"
+            >
+                <subSections>
+                    <ObjectPageSubSection id="assignmesntsSubSection">
+                        <blocks>
+                            <m:Table
+                                id="groupsAssignmentTable"
+                                mode="MultiSelect"
+                                inset="false"
+                                items="{userModel>/currentUser/groups}"
+                            >
+                                <m:columns>
+                                    <m:Column id="groupCol1">
+                                        <m:Text text="{i18n>groupNameCol}" />
+                                    </m:Column>
+                                    <m:Column id="groupCol2">
+                                        <m:Text
+                                            text="{i18n>groupDisplayName}"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="groupCol3">
+                                        <m:Text
+                                            text="{i18n>groupDescriptionCol}"
+                                        />
+                                    </m:Column>
+                                </m:columns>
+
+                                <m:items>
+                                    <m:ColumnListItem id="groupItem">
+                                        <m:cells>
+                                            <m:Text text="{userModel>NAME}" />
+                                            <m:Text
+                                                text="{userModel>DISPLAY_NAME}"
+                                            />
+                                            <m:Text
+                                                text="{userModel>DESCRIPTION}"
+                                            />
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
 </mvc:View>
