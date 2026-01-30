@@ -47,6 +47,8 @@ sap.ui.define([
             sap.ui.getCore().getEventBus().subscribe("UserChannel", "ReloadUsers", function () {
                 this.loadAllUsers("");
             }.bind(this));
+            sap.ui.getCore().getEventBus().subscribe("FiltersChannel", "ResetFilters", this.onResetFilters, this);
+
 
 
         },

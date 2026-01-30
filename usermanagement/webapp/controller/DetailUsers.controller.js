@@ -25,7 +25,8 @@ sap.ui.define([
                         closeColumn: true
                     }
                 },
-                isEditMode: false
+                isEditMode: false,
+                groupsSelected: false
             });
 
             var oOptionsModel = new JSONModel({
@@ -54,6 +55,7 @@ sap.ui.define([
 
             this.getView().setModel(userModel, "userModel");
             this.getView().setModel(oOptionsModel, "options");
+
             oRouter.getRoute("userDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
@@ -264,18 +266,18 @@ sap.ui.define([
                 this._oInput.setValue(selectedCountry.code);
 
                 var userModel = this.getView().getModel("userModel");
-                userModel.setProperty("/editUser/COUNTRY", selectedCountry.code);  
+                userModel.setProperty("/editUser/COUNTRY", selectedCountry.code);
             }
 
             this._oCountryDialog.close();
         },
         handleSave: async function () {
             var userModel = this.getView().getModel("userModel");
-            var editUser = userModel.getProperty("/editUser");  
+            var editUser = userModel.getProperty("/editUser");
             var oView = this.getView();
             var oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
 
-           
+
             if (!editUser.LAST_NAME || !editUser.EMAIL || !editUser.STATUS || !editUser.USER_TYPE) {
                 MessageToast.show(oResourceBundle.getText("requiredFieldsError"));
                 return;
@@ -301,7 +303,7 @@ sap.ui.define([
             };
 
             try {
-                var response = await fetch(`/api/users/${editUser.ID}`, { 
+                var response = await fetch(`/api/users/${editUser.ID}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
@@ -317,7 +319,7 @@ sap.ui.define([
 
                 var updatedData = await response.json();
 
-               
+
                 userModel.setProperty("/currentUser", updatedData);
 
                 var freshEditUser = JSON.parse(JSON.stringify(updatedData));
@@ -393,6 +395,254 @@ sap.ui.define([
             var selectedSection = oObjectPageLayout.getSelectedSection();
             var userModel = this.getView().getModel("userModel");
             userModel.setProperty("/selectedSection", selectedSection);
+        },
+        onAssign: function () {
+            var oView = this.getView();
+            var userModel = this.getView().getModel("userModel");
+            var currentUserId = userModel.getProperty("/currentUser/ID");
+
+            if (!this._oAssignGroupsDialog) {
+                this._oAssignGroupsDialog = sap.ui.xmlfragment(
+                    oView.getId(),
+                    "com.customer.usermanagement.usermanagement.view.fragments.AssignUserToGroups",
+                    this
+                );
+                oView.addDependent(this._oAssignGroupsDialog);
+            }
+
+
+            this._loadGroupsForAssignment(currentUserId);
+        },
+        onAssignGroupsSelectionChange: function (oEvent) {
+            var oItem = oEvent.getParameter("listItem");
+            var bSelected = oEvent.getParameter("selected");
+            var oTable = oEvent.getSource();
+
+            if (!oItem) return;
+
+            var oCtx = oItem.getBindingContext("assignGroupsModel");
+            if (!oCtx) return;
+
+            var bAssigned = oCtx.getProperty("assigned");
+
+            // Block deselection of assigned groups
+            if (bAssigned && !bSelected) {
+                oEvent.preventDefault();
+                setTimeout(function () {
+                    oTable.setSelectedItem(oItem, true);
+                }, 0);
+            }
+        },
+
+
+        _loadGroupsForAssignment: async function (userId) {
+            var oView = this.getView();
+            oView.setBusy(true);
+
+            try {
+                // Get all groups
+                var allGroupsResponse = await fetch('/api/groups');
+                if (!allGroupsResponse.ok) {
+                    throw new Error(`HTTP ${allGroupsResponse.status}: ${allGroupsResponse.statusText}`);
+                }
+                var allGroupsData = await allGroupsResponse.json();
+                var allGroups = allGroupsData.Resources || [];
+
+                // Get user's current groups
+                var userGroupsResponse = await fetch(`/api/users/${userId}/groups`);
+                if (!userGroupsResponse.ok) {
+                    throw new Error(`HTTP ${userGroupsResponse.status}: ${userGroupsResponse.statusText}`);
+                }
+                var userGroupsData = await userGroupsResponse.json();
+                var userGroupIds = (userGroupsData.groups || []).map(g => g.ID);
+
+                var groupsWithAssignment = allGroups.map(function (group) {
+                    group.assigned = userGroupIds.indexOf(group.ID) !== -1;
+                    group.uiSelected = false;
+                    return group;
+                });
+
+                var assignGroupsModel = new sap.ui.model.json.JSONModel({
+                    groups: groupsWithAssignment,
+                    userId: userId
+                });
+
+                this.getView().setModel(assignGroupsModel, "assignGroupsModel");
+
+
+                this._oAssignGroupsDialog.open();
+
+            } catch (error) {
+                console.error("Error loading groups:", error);
+                sap.m.MessageToast.show("Error loading groups");
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        onAssignGroupsConfirm: async function () {
+            var assignGroupsModel = this.getView().getModel("assignGroupsModel");
+            var assignGroupsTable = this.getView().byId("assignGroupsTable");
+            var selectedItems = assignGroupsTable.getSelectedItems();
+            var userId = assignGroupsModel.getProperty("/userId");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            var oView = this.getView();
+
+            if (selectedItems.length === 0) {
+                sap.m.MessageToast.show("Please select groups to assign");
+                return;
+            }
+
+            var selectedGroupIds = selectedItems.map(item =>
+                item.getBindingContext("assignGroupsModel").getProperty("ID")
+            );
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/users/${userId}/groups`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ groupIds: selectedGroupIds })
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                var result = await response.json();
+                console.log("Groups assigned:", result);
+                sap.m.MessageToast.show(oResourceBundle.getText("groupsAssignedSuccess"));
+
+                this._loadUserGroups(userId);
+
+                this._oAssignGroupsDialog.close();
+
+            } catch (error) {
+                console.error("Error assigning groups:", error);
+                sap.m.MessageToast.show(oResourceBundle.getText("groupsAssignError"));
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        onAssignGroupsCancel: function () {
+            this._oAssignGroupsDialog.close();
+            this._oAssignGroupsDialog.destroy();
+            this._oAssignGroupsDialog = null;
+        },
+        onGroupsSelectionChange: function (oEvent) {
+            var oTable = oEvent.getSource();
+            var aSelectedItems = oTable.getSelectedItems();
+            var userModel = this.getView().getModel("userModel");
+
+            userModel.setProperty("/groupsSelected", aSelectedItems.length > 0);
+        },
+        onUnassign: async function () {
+            var oTable = this.getView().byId("groupsAssignmentTable");
+            var selectedItems = oTable.getSelectedItems();
+            var userModel = this.getView().getModel("userModel");
+            var currentUser = userModel.getProperty("/currentUser");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            var oView = this.getView();
+
+            if (selectedItems.length === 0) {
+                sap.m.MessageToast.show("Please select groups to unassign");
+                return;
+            }
+
+            var selectedGroupIds = selectedItems.map(item =>
+                item.getBindingContext("userModel").getProperty("ID")
+            );
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/users/${currentUser.ID}/groups`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ groupIds: selectedGroupIds })
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                var result = await response.json();
+                console.log("Groups unassigned:", result);
+                sap.m.MessageToast.show(oResourceBundle.getText("groupsUnassignedSuccess"));
+
+                this._loadUserGroups(currentUser.ID);
+
+                oTable.removeSelections(true);
+
+                userModel.setProperty("/groupsSelected", false);
+
+            } catch (error) {
+                console.error("Error unassigning groups:", error);
+                sap.m.MessageToast.show(oResourceBundle.getText("groupsUnassignError"));
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        onDeleteUser: function () {
+            var userModel = this.getView().getModel("userModel");
+            var currentUser = userModel.getProperty("/currentUser");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+
+            sap.m.MessageBox.confirm(
+                oResourceBundle.getText("deleteUserConfirmMessage"),
+                {
+                    title: oResourceBundle.getText("deleteUserConfirmTitle"),
+                    onClose: (sAction) => {  
+                        if (sAction === sap.m.MessageBox.Action.OK) {
+                            this._deleteUser(currentUser.ID); 
+                        }
+                    }
+                }
+            );
+        },
+
+        _deleteUser: async function (userId) {
+            var oView = this.getView();
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                MessageToast.show(oResourceBundle.getText("userDeletedSuccess"));
+
+                // Reload users table
+                this._reloadUsersTable();
+
+                // Close detail page
+                this.handleClose();
+
+                oView.setBusy(false);
+
+            } catch (error) {
+                console.error("Error deleting user:", error);
+                MessageToast.show(oResourceBundle.getText("userDeleteError"));
+                oView.setBusy(false);
+            }
         }
 
 

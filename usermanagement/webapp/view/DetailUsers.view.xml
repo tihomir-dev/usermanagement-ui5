@@ -92,7 +92,6 @@
                         type="Emphasized"
                         press="handleEdit"
                         visible="{= !${userModel>/isEditMode} &amp;&amp; ${userModel>/selectedSection} !== '__xmlview2--objPageSection2'}"
-                        
                     />
                     <m:Button
                         id="saveButton"
@@ -112,6 +111,7 @@
                         id="deleteButton"
                         text="{i18n>delete}"
                         type="Transparent"
+                        press="onDeleteUser"
                     />
                 </actions>
             </ObjectPageDynamicHeaderTitle>
@@ -334,7 +334,31 @@
                                 mode="MultiSelect"
                                 inset="false"
                                 items="{userModel>/currentUser/groups}"
+                                selectionChange="onGroupsSelectionChange"
                             >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar id="grouapAssOverFlow">
+                                        <m:ToolbarSpacer
+                                            id="groupsAssignToolb"
+                                        />
+                                        <m:Button
+                                            id="assignGroup"
+                                            text="Assign"
+                                            type="Emphasized"
+                                            press=".onAssign"
+                                            tooltip="Assign groups to user"
+                                        />
+                                        <m:Button
+                                            id="unAssignGroup"
+                                            text="Unassign"
+                                            type="Transparent"
+                                            press=".onUnassign"
+                                            tooltip="Unassign groups from user"
+                                            enabled="{userModel>/groupsSelected}"
+                                            
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
                                 <m:columns>
                                     <m:Column id="groupCol1">
                                         <m:Text text="{i18n>groupNameCol}" />

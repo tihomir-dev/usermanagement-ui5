@@ -27,13 +27,13 @@ sap.ui.define([
             this.getOwnerComponent().setModel(layoutModel, "layout");
             this.getView().setModel(userModel, "userModel");
 
-            this.oRouter.attachBeforeRouteMatched(function(oEvent) {
+            this.oRouter.attachBeforeRouteMatched(function (oEvent) {
                 var sLayout = oEvent.getParameter("arguments").layout;
                 if (sLayout) {
                     layoutModel.setProperty("/layout", sLayout);
                 }
             });
-            
+
             this.loadCurrentUser();
         },
 
@@ -52,14 +52,23 @@ sap.ui.define([
         onTabSelect: function (oEvent) {
             var selectedKey = oEvent.getParameter("key");
             var userModel = this.getView().getModel("userModel");
+            var layoutModel = this.getOwnerComponent().getModel("layout");
+
+            // Close mid column
+            if (layoutModel) {
+                layoutModel.setProperty("/layout", "OneColumn");
+            }
+
             userModel.setProperty("/selectedKey", selectedKey);
 
             if (selectedKey === "home") {
                 this.oRouter.navTo("home");
             } else if (selectedKey === "users") {
                 this.oRouter.navTo("users");
+                sap.ui.getCore().getEventBus().publish("FiltersChannel", "ResetFilters");
             } else if (selectedKey === "groups") {
                 this.oRouter.navTo("groups");
+                sap.ui.getCore().getEventBus().publish("FiltersChannel", "ResetFilters");
             }
         },
 

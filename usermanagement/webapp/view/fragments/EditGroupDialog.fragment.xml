@@ -1,0 +1,68 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="editGroupDialog"
+        title="Edit Group"
+        contentWidth="500px"
+    >
+        <form:SimpleForm
+            id="editGroupForm"
+            layout="ResponsiveGridLayout"
+            labelSpanL="3"
+            labelSpanM="3"
+            columnsL="1"
+            columnsM="1"
+        >
+            <form:content>
+                <Label text="Group ID" />
+                <Input
+                    id="editGroupId"
+                    value="{editGroupModel>/id}"
+                    editable="false"
+                />
+
+                <Label text="Group Name" required="true" />
+                <Input
+                    id="editGroupName"
+                    value="{editGroupModel>/name}"
+                    editable="false"
+                />
+
+                <Label text="Display Name" required="true" />
+                <Input
+                    id="editGroupDisplayName"
+                    value="{editGroupModel>/displayName}"
+                    required="true"
+                />
+
+                <Label text="Description" />
+                <TextArea
+                    id="editGroupDescription"
+                    value="{editGroupModel>/description}"
+                    rows="4"
+                />
+            </form:content>
+        </form:SimpleForm>
+
+        <beginButton>
+            <Button
+                id="editGroupSaveBtn"
+                text="Save"
+                type="Emphasized"
+                press=".onEditGroupSave"
+            />
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="editGroupCancelBtn"
+                text="Cancel"
+                type="Transparent"
+                press=".onEditGroupCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

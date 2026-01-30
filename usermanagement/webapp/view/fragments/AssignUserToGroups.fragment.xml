@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:m="sap.m"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="assignGroupsToUserDialog"
+        title="Assign Groups to User"
+        contentWidth="600px"
+    >
+        <m:Table
+            id="assignGroupsTable"
+            mode="MultiSelect"
+            inset="false"
+            items="{assignGroupsModel>/groups}"
+            selectionChange=".onAssignGroupsSelectionChange"
+            
+        >
+            <m:columns>
+                <m:Column id="assignGroupCol1">
+                    <m:Text text="{i18n>groupNameCol}" />
+                </m:Column>
+                <m:Column id="assignGroupCol2">
+                    <m:Text text="{i18n>groupDisplayName}" />
+                </m:Column>
+                <m:Column id="assignGroupCol3">
+                    <m:Text text="{i18n>groupDescriptionCol}" />
+                </m:Column>
+            </m:columns>
+
+            <m:items>
+                <m:ColumnListItem 
+                    selected="{= ${assignGroupsModel>assigned} || ${assignGroupsModel>uiSelected} }"
+
+                >
+                    <m:cells>
+                        <m:Text text="{assignGroupsModel>NAME}" />
+                        <m:Text text="{assignGroupsModel>DISPLAY_NAME}" />
+                        <m:Text text="{assignGroupsModel>DESCRIPTION}" />
+                    </m:cells>
+                </m:ColumnListItem>
+            </m:items>
+        </m:Table>
+
+        <beginButton>
+            <m:Button
+                id="assignBtn"
+                text="Assign"
+                type="Emphasized"
+                press=".onAssignGroupsConfirm"
+            />
+        </beginButton>
+
+        <endButton>
+            <m:Button
+                id="cancelAssignBtn"
+                text="Cancel"
+                type="Transparent"
+                press=".onAssignGroupsCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

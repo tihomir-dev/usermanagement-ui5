@@ -1,0 +1,237 @@
+<mvc:View
+    displayBlock="true"
+    controllerName="com.customer.usermanagement.usermanagement.controller.DetailGroups"
+    height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+>
+    <ObjectPageLayout
+        id="ObjectPageLayoutGroups"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        useIconTabBar="true"
+        beforeNavigate="onBeforeNavigate"
+        upperCaseAnchorBar="false"
+        sectionChange="onSectionChange"
+    >
+        <headerTitle>
+            <ObjectPageDynamicHeaderTitle id="opdh1Groups">
+                <expandedHeading>
+                    <m:Title
+                        id="groupTitle1"
+                        text="{groupsModel>/currentGroup/DISPLAY_NAME}"
+                        wrapping="true"
+                        class="sapUiSmallMarginEnd"
+                    />
+                </expandedHeading>
+
+                <snappedHeading>
+                    <m:HBox
+                        id="groupHbxo2"
+                        wrap="NoWrap"
+                        alignItems="Center"
+                        class="sapUiTinyMarginEnd"
+                    >
+                        <m:VBox
+                            id="vbox5"
+                            wrap="Wrap"
+                        >
+                            <m:Title
+                                id="title6"
+                                text="{groupsModel>/currentGroup/NAME}"
+                                wrapping="true"
+                            />
+                            <m:Label
+                                id="groupIdlabel"
+                                text="{groupsModel>/currentGroup/ID}"
+                                wrapping="true"
+                            />
+                        </m:VBox>
+                    </m:HBox>
+                </snappedHeading>
+
+                <navigationActions>
+                    <m:OverflowToolbarButton
+                        type="Transparent"
+                        icon="sap-icon://full-screen"
+                        press="handleFullScreen"
+                        id="enterFullScreenBtnGroup"
+                        tooltip="{i18n>fullScreenTip}"
+                        visible="{groupsModel>/actionButtonsInfo/midColumn/fullScreen}"
+                    />
+                    <m:OverflowToolbarButton
+                        type="Transparent"
+                        icon="sap-icon://exit-full-screen"
+                        press="handleExitFullScreen"
+                        id="exitFullScreenBtnGroup"
+                        tooltip="{i18n>exitScreenTip}"
+                        visible="{groupsModel>/actionButtonsInfo/midColumn/exitFullScreen}"
+                    />
+
+                    <m:OverflowToolbarButton
+                        id="oflbuttnGroup"
+                        type="Transparent"
+                        icon="sap-icon://decline"
+                        press="handleClose"
+                        tooltip="{i18n>closeMidCol}"
+                        visible="{groupsModel>/actionButtonsInfo/midColumn/closeColumn}"
+                    />
+                </navigationActions>
+
+                <actions>
+                    <m:Button
+                        id="editButtonGroup"
+                        text="{i18n>edit}"
+                        type="Emphasized"
+                        press="handleEdit"
+                        visible="{= !${groupsModel>/isEditMode} &amp;&amp; ${groupsModel>/selectedSection} !== '__xmlview2--objPageSection2'}"
+                    />
+                    <m:Button
+                        id="saveButtonGroup"
+                        text="{i18n>save}"
+                        type="Emphasized"
+                        press="handleSave"
+                        visible="{groupsModel>/isEditMode}"
+                    />
+                    <m:Button
+                        id="cancelButtonGroup"
+                        text="{i18n>cancel}"
+                        type="Transparent"
+                        press="handleCancel"
+                        visible="{groupsModel>/isEditMode}"
+                    />
+                    <m:Button
+                        id="deleteButtonGroup"
+                        text="{i18n>delete}"
+                        type="Transparent"
+                    />
+                </actions>
+            </ObjectPageDynamicHeaderTitle>
+        </headerTitle>
+
+        <headerContent>
+            <m:FlexBox
+                id="fxbox10"
+                wrap="Wrap"
+                fitContainer="true"
+                alignItems="Stretch"
+            >
+                <m:VBox
+                    id="bxvo14"
+                    justifyContent="Center"
+                    class="sapUiSmallMarginEnd"
+                >
+                    <m:Label
+                        id="labelIdscim"
+                        text="{i18n>scimId}"
+                    />
+                    <m:Text
+                        id="text17"
+                        text="{groupsModel>/currentGroup/ID}"
+                    />
+                </m:VBox>
+                
+            </m:FlexBox>
+        </headerContent>
+
+        <sections>
+            
+            <ObjectPageSection
+                id="objPageSectionGroupMembers"
+                title="{i18n>detailsSectionTitleGroups}"
+                titleUppercase="false"
+                showTitle="true"
+            >
+                <subSections>
+                    <ObjectPageSubSection id="groupMembersSection">
+                        <blocks>
+                            <m:Table
+                                id="groupMemebersTable"
+                                mode="MultiSelect"
+                                inset="false"
+                                items="{groupsModel>/currentGroup/members}"
+                                selectionChange="onGroupsSelectionChange"
+                            >
+                                <m:headerToolbar>
+                                    <m:OverflowToolbar id="grouapMemOverFlow">
+                                        <m:ToolbarSpacer
+                                            id="groupsMembersToolb"
+                                        />
+                                        <m:Button
+                                            id="assignMembers"
+                                            text="Assign"
+                                            type="Emphasized"
+                                            press=".onAssignMemebrs"
+                                            tooltip="Assign Memebrs to Group"
+                                        />
+                                        <m:Button
+                                            id="unAssignGroupMemebrs"
+                                            text="Unassign"
+                                            type="Transparent"
+                                            press=".onUnAssignMemebrs"
+                                            tooltip="UnAssign Memebrs to Group"
+                                            enabled="{groupsModel>/groupsSelected}"
+                                            
+                                        />
+                                    </m:OverflowToolbar>
+                                </m:headerToolbar>
+                                <m:columns>
+                                    <m:Column id="userCol1">
+                                        <m:Text text="{i18n>firstNameCol}" />
+                                    </m:Column>
+                                    <m:Column id="userCol2">
+                                        <m:Text
+                                            text="{i18n>lastNameCol}"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="userCol3">
+                                        <m:Text
+                                            text="{i18n>emailCol}"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="userCol4">
+                                        <m:Text
+                                            text="{i18n>loginNameCol}"
+                                        />
+                                    </m:Column>
+                                    <m:Column id="userCol5">
+                                        <m:Text
+                                            text="{i18n>userIdCol}"
+                                        />
+                                    </m:Column>
+                                </m:columns>
+
+                                <m:items>
+                                    <m:ColumnListItem id="userItem1">
+                                        <m:cells>
+                                            <m:Text text="{groupsModel>FIRST_NAME}" />
+                                            <m:Text
+                                                text="{groupsModel>LAST_NAME}"
+                                            />
+                                            <m:Text
+                                                text="{groupsModel>EMAIL}"
+                                            />
+                                             <m:Text
+                                                text="{groupsModel>LOGIN_NAME}"
+                                            />
+                                             <m:Text
+                                                text="{groupsModel>ID}"
+                                            />
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                            </m:Table>
+                        </blocks>
+                    </ObjectPageSubSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</mvc:View>

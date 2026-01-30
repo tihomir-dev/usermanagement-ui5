@@ -32,17 +32,17 @@
 		</headerToolbar>
 		
 		<columns>
-			<Column id="cole1"><Text text="{i18n>groupNameCol}" /></Column>
-			<Column id="colw2"><Text text="{i18n>groupDescriptionCol}" /></Column>
-			<Column id="col3e"><Text text="{i18n>groupMembersCol}" /></Column>
+			<Column id="cole1"><Text text="{i18n>scimId}" /></Column>
+			<Column id="colw2"><Text text="{i18n>groupDisplayName}" /></Column>
+			<Column id="col3e"><Text text="{i18n>groupDescriptionCol}" /></Column>
 		</columns>
 		
 		<items>
 			<ColumnListItem id="groupListItem" type="Navigation">
 				<cells>
-					<Text text="{groupsModel>name}"/>
-					<Text text="{groupsModel>description}"/>
-					<Text text="{groupsModel>memberCount}"/>
+					<Text text="{groupsModel>ID}"/>
+					<Text text="{groupsModel>DISPLAY_NAME}"/>
+					<Text text="{groupsModel>DESCRIPTION}"/>
 				</cells>
 			</ColumnListItem>
 		</items>

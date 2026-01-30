@@ -145,7 +145,7 @@
           "controlAggregation": "beginColumnPages"
         },
         "groupDetail": {
-          "viewName": "GroupDetail",
+          "viewName": "DetailGroups",
           "viewLevel": 1,
           "controlAggregation": "midColumnPages"
         },
