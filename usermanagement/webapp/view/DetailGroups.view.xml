@@ -93,13 +93,13 @@
                         press="handleEdit"
                         visible="{= !${groupsModel>/isEditMode} &amp;&amp; ${groupsModel>/selectedSection} !== '__xmlview2--objPageSection2'}"
                     />
-                    <m:Button
+                    <!-- <m:Button
                         id="saveButtonGroup"
                         text="{i18n>save}"
                         type="Emphasized"
                         press="handleSave"
                         visible="{groupsModel>/isEditMode}"
-                    />
+                    /> -->
                     <m:Button
                         id="cancelButtonGroup"
                         text="{i18n>cancel}"
@@ -111,6 +111,7 @@
                         id="deleteButtonGroup"
                         text="{i18n>delete}"
                         type="Transparent"
+                        press=".onDeleteGroup"
                     />
                 </actions>
             </ObjectPageDynamicHeaderTitle>
@@ -137,12 +138,10 @@
                         text="{groupsModel>/currentGroup/ID}"
                     />
                 </m:VBox>
-                
             </m:FlexBox>
         </headerContent>
 
         <sections>
-            
             <ObjectPageSection
                 id="objPageSectionGroupMembers"
                 title="{i18n>detailsSectionTitleGroups}"
@@ -168,17 +167,17 @@
                                             id="assignMembers"
                                             text="Assign"
                                             type="Emphasized"
-                                            press=".onAssignMemebrs"
+                                            press=".onAssignMembers"
                                             tooltip="Assign Memebrs to Group"
+                                            enabled="{= ${groupsModel>/groupsSelected} === false}"
                                         />
                                         <m:Button
-                                            id="unAssignGroupMemebrs"
+                                            id="unAssignGroupMembers"
                                             text="Unassign"
                                             type="Transparent"
-                                            press=".onUnAssignMemebrs"
-                                            tooltip="UnAssign Memebrs to Group"
+                                            press=".onUnAssignMembers"
+                                            tooltip="Unassign Members from Group"
                                             enabled="{groupsModel>/groupsSelected}"
-                                            
                                         />
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
@@ -187,43 +186,35 @@
                                         <m:Text text="{i18n>firstNameCol}" />
                                     </m:Column>
                                     <m:Column id="userCol2">
-                                        <m:Text
-                                            text="{i18n>lastNameCol}"
-                                        />
+                                        <m:Text text="{i18n>lastNameCol}" />
                                     </m:Column>
                                     <m:Column id="userCol3">
-                                        <m:Text
-                                            text="{i18n>emailCol}"
-                                        />
+                                        <m:Text text="{i18n>emailCol}" />
                                     </m:Column>
                                     <m:Column id="userCol4">
-                                        <m:Text
-                                            text="{i18n>loginNameCol}"
-                                        />
+                                        <m:Text text="{i18n>loginNameCol}" />
                                     </m:Column>
                                     <m:Column id="userCol5">
-                                        <m:Text
-                                            text="{i18n>userIdCol}"
-                                        />
+                                        <m:Text text="{i18n>userIdCol}" />
                                     </m:Column>
                                 </m:columns>
 
                                 <m:items>
                                     <m:ColumnListItem id="userItem1">
                                         <m:cells>
-                                            <m:Text text="{groupsModel>FIRST_NAME}" />
+                                            <m:Text
+                                                text="{groupsModel>FIRST_NAME}"
+                                            />
                                             <m:Text
                                                 text="{groupsModel>LAST_NAME}"
                                             />
                                             <m:Text
                                                 text="{groupsModel>EMAIL}"
                                             />
-                                             <m:Text
+                                            <m:Text
                                                 text="{groupsModel>LOGIN_NAME}"
                                             />
-                                             <m:Text
-                                                text="{groupsModel>ID}"
-                                            />
+                                            <m:Text text="{groupsModel>ID}" />
                                         </m:cells>
                                     </m:ColumnListItem>
                                 </m:items>

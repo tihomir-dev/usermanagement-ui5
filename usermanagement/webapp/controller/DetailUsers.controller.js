@@ -414,25 +414,45 @@ sap.ui.define([
             this._loadGroupsForAssignment(currentUserId);
         },
         onAssignGroupsSelectionChange: function (oEvent) {
-            var oItem = oEvent.getParameter("listItem");
-            var bSelected = oEvent.getParameter("selected");
             var oTable = oEvent.getSource();
 
-            if (!oItem) return;
+            var bSelected = oEvent.getParameter("selected");
+            var bSelectAll = oEvent.getParameter("selectAll");
+            var oItem = oEvent.getParameter("listItem");
 
-            var oCtx = oItem.getBindingContext("assignGroupsModel");
-            if (!oCtx) return;
+            var oModel = this.getView().getModel("assignGroupsModel");
+            var assignedGroupIds = oModel.getProperty("/assignedGroupIds") || [];
 
-            var bAssigned = oCtx.getProperty("assigned");
+            //  CASE 1: User clicked DESELECT-ALL (header checkbox)
+            if (bSelectAll === false) {
+                Promise.resolve().then(() => {
+                    oTable.getItems().forEach(function (item) {
+                        var oCtx = item.getBindingContext("assignGroupsModel");
+                        if (!oCtx) return;
 
-            // Block deselection of assigned groups
-            if (bAssigned && !bSelected) {
-                oEvent.preventDefault();
-                setTimeout(function () {
-                    oTable.setSelectedItem(oItem, true);
-                }, 0);
+                        var groupId = oCtx.getProperty("ID");
+                        if (assignedGroupIds.includes(groupId)) {
+                            oTable.setSelectedItem(item, true);
+                        }
+                    });
+                });
+                return;
+            }
+
+            //  CASE 2: User tries to deselect a single ASSIGNED group
+            if (!bSelected && oItem) {
+                var oCtx = oItem.getBindingContext("assignGroupsModel");
+                if (!oCtx) return;
+
+                var groupId = oCtx.getProperty("ID");
+                if (assignedGroupIds.includes(groupId)) {
+                    Promise.resolve().then(() => {
+                        oTable.setSelectedItem(oItem, true);
+                    });
+                }
             }
         },
+
 
 
         _loadGroupsForAssignment: async function (userId) {
@@ -458,18 +478,16 @@ sap.ui.define([
 
                 var groupsWithAssignment = allGroups.map(function (group) {
                     group.assigned = userGroupIds.indexOf(group.ID) !== -1;
-                    group.uiSelected = false;
                     return group;
                 });
 
                 var assignGroupsModel = new sap.ui.model.json.JSONModel({
                     groups: groupsWithAssignment,
-                    userId: userId
+                    userId: userId,
+                    assignedGroupIds: userGroupIds  
                 });
 
                 this.getView().setModel(assignGroupsModel, "assignGroupsModel");
-
-
                 this._oAssignGroupsDialog.open();
 
             } catch (error) {
@@ -600,9 +618,9 @@ sap.ui.define([
                 oResourceBundle.getText("deleteUserConfirmMessage"),
                 {
                     title: oResourceBundle.getText("deleteUserConfirmTitle"),
-                    onClose: (sAction) => {  
+                    onClose: (sAction) => {
                         if (sAction === sap.m.MessageBox.Action.OK) {
-                            this._deleteUser(currentUser.ID); 
+                            this._deleteUser(currentUser.ID);
                         }
                     }
                 }

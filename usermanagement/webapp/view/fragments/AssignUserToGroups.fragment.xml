@@ -31,8 +31,7 @@
 
             <m:items>
                 <m:ColumnListItem 
-                    selected="{= ${assignGroupsModel>assigned} || ${assignGroupsModel>uiSelected} }"
-
+                    selected="{assignGroupsModel>assigned}"
                 >
                     <m:cells>
                         <m:Text text="{assignGroupsModel>NAME}" />

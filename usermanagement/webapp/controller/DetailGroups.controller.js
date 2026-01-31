@@ -26,7 +26,8 @@ sap.ui.define([
                     }
                 },
                 isEditMode: false,
-                groupsSelected: false
+                groupsSelected: false,
+                selectAllClicked: false
             });
             this.getView().setModel(groupsModel, "groupsModel");
             oRouter.getRoute("groupDetail").attachPatternMatched(this._onRouteMatched, this);
@@ -195,6 +196,7 @@ sap.ui.define([
 
                 var updatedData = await response.json();
                 groupsModel.setProperty("/currentGroup", updatedData);
+                await this._loadGroupMembers(editData.id);
 
                 sap.m.MessageToast.show(oResourceBundle.getText("groupSavedSuccess"));
                 this._oEditGroupDialog.close();
@@ -214,7 +216,265 @@ sap.ui.define([
         },
         _reloadGroupsTable: function () {
             sap.ui.getCore().getEventBus().publish("GroupChannel", "ReloadGroups");
+        },
+        onAssignMembersSelectionChange: function (oEvent) {
+            var oTable = oEvent.getSource();
+            var bSelected = oEvent.getParameter("selected");
+            var bSelectAll = oEvent.getParameter("selectAll");
+            var oItem = oEvent.getParameter("listItem");
+
+            var oModel = this.getView().getModel("assignMembersModel");
+            var assignedUserIds = oModel.getProperty("/assignedUserIds");
+
+            // CASE 1: User clicked SELECT-ALL checkbox
+            if (bSelectAll === false) {
+                // Deselect-all → reselect assigned users AFTER UI5 finishes
+                Promise.resolve().then(() => {
+                    oTable.getItems().forEach(function (item) {
+                        var oCtx = item.getBindingContext("assignMembersModel");
+                        if (!oCtx) return;
+
+                        var userId = oCtx.getProperty("ID");
+                        if (assignedUserIds.includes(userId)) {
+                            oTable.setSelectedItem(item, true);
+                        }
+                    });
+                });
+                return;
+            }
+
+            //  CASE 2: User tries to deselect a single assigned row
+            if (!bSelected && oItem) {
+                var oCtx = oItem.getBindingContext("assignMembersModel");
+                if (!oCtx) return;
+
+                var userId = oCtx.getProperty("ID");
+                if (assignedUserIds.includes(userId)) {
+                    Promise.resolve().then(() => {
+                        oTable.setSelectedItem(oItem, true);
+                    });
+                }
+            }
+        },
+
+        onAssignMembers: function () {
+            var oView = this.getView();
+            var groupsModel = this.getView().getModel("groupsModel");
+            var currentGroupId = groupsModel.getProperty("/currentGroup/ID");
+
+            if (!this._oAssignMembersDialog) {
+                this._oAssignMembersDialog = sap.ui.xmlfragment(
+                    oView.getId(),
+                    "com.customer.usermanagement.usermanagement.view.fragments.AssignMembersDialog",
+                    this
+                );
+                oView.addDependent(this._oAssignMembersDialog);
+            }
+
+            this._loadUsersForAssignment(currentGroupId);
+        },
+        onAssignMembersConfirm: async function () {
+            var assignMembersModel = this.getView().getModel("assignMembersModel");
+            var assignMembersTable = this.getView().byId("assignMembersTable");
+            var selectedItems = assignMembersTable.getSelectedItems();
+            var groupId = assignMembersModel.getProperty("/groupId");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            var oView = this.getView();
+
+            if (selectedItems.length === 0) {
+                MessageToast.show("Please select members to assign");
+                return;
+            }
+
+            var selectedUserIds = selectedItems.map(item =>
+                item.getBindingContext("assignMembersModel").getProperty("ID")
+            );
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/groups/${groupId}/members`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ userIds: selectedUserIds })
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                var result = await response.json();
+                console.log("Members assigned:", result);
+                MessageToast.show(oResourceBundle.getText("membersAssignedSuccess"));
+
+                this._loadGroupMembers(groupId);
+                this._oAssignMembersDialog.close();
+
+            } catch (error) {
+                console.error("Error assigning members:", error);
+                MessageToast.show(oResourceBundle.getText("membersAssignError"));
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        _loadUsersForAssignment: async function (groupId) {
+            var oView = this.getView();
+            oView.setBusy(true);
+
+            try {
+                var allUsersResponse = await fetch('/api/users');
+                if (!allUsersResponse.ok) {
+                    throw new Error(`HTTP ${allUsersResponse.status}: ${allUsersResponse.statusText}`);
+                }
+                var allUsersData = await allUsersResponse.json();
+                var allUsers = allUsersData.items || [];
+
+                var groupMembersResponse = await fetch(`/api/groups/${groupId}/members`);
+                if (!groupMembersResponse.ok) {
+                    throw new Error(`HTTP ${groupMembersResponse.status}: ${groupMembersResponse.statusText}`);
+                }
+                var groupMembersData = await groupMembersResponse.json();
+                var memberUserIds = (groupMembersData.members || []).map(m => m.ID);
+
+                // Store assigned IDs in model for comparison
+                var assignMembersModel = new sap.ui.model.json.JSONModel({
+                    users: allUsers.map(function (user) {
+                        user.assigned = memberUserIds.indexOf(user.ID) !== -1;
+                        return user;
+                    }),
+                    groupId: groupId,
+                    assignedUserIds: memberUserIds 
+                });
+
+                this.getView().setModel(assignMembersModel, "assignMembersModel");
+                this._oAssignMembersDialog.open();
+
+            } catch (error) {
+                console.error("Error loading users:", error);
+                sap.m.MessageToast.show("Error loading users");
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        onAssignMembersCancel: function () {
+            this._oAssignMembersDialog.close();
+            this._oAssignMembersDialog.destroy();
+            this._oAssignMembersDialog = null;
+        },
+        onGroupsSelectionChange: function (oEvent) {
+            var oTable = oEvent.getSource();
+            var aSelectedItems = oTable.getSelectedItems();
+            var groupsModel = this.getView().getModel("groupsModel");
+
+            groupsModel.setProperty("/groupsSelected", aSelectedItems.length > 0);
+        },
+        onUnAssignMembers: async function () {
+            var oTable = this.getView().byId("groupMemebersTable");
+            var selectedItems = oTable.getSelectedItems();
+            var groupsModel = this.getView().getModel("groupsModel");
+            var currentGroup = groupsModel.getProperty("/currentGroup");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+            var oView = this.getView();
+
+            if (selectedItems.length === 0) {
+                sap.m.MessageToast.show("Please select members to unassign");
+                return;
+            }
+
+            var selectedUserIds = selectedItems.map(item =>
+                item.getBindingContext("groupsModel").getProperty("ID")
+            );
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/groups/${currentGroup.ID}/members`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ userIds: selectedUserIds })
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                var result = await response.json();
+                console.log("Members unassigned:", result);
+                sap.m.MessageToast.show(oResourceBundle.getText("membersUnassignedSuccess"));
+
+                this._loadGroupMembers(currentGroup.ID);
+                oTable.clearSelection();
+                groupsModel.setProperty("/groupsSelected", false);
+
+            } catch (error) {
+                console.error("Error unassigning members:", error);
+                sap.m.MessageToast.show(oResourceBundle.getText("membersUnassignError"));
+            } finally {
+                oView.setBusy(false);
+            }
+        },
+        onDeleteGroup: function () {
+            var groupsModel = this.getView().getModel("groupsModel");
+            var currentGroup = groupsModel.getProperty("/currentGroup");
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+
+            sap.m.MessageBox.confirm(
+                oResourceBundle.getText("deleteGroupConfirmMessage"),
+                {
+                    title: oResourceBundle.getText("deleteGroupConfirmTitle"),
+                    onClose: (sAction) => {
+                        if (sAction === sap.m.MessageBox.Action.OK) {
+                            this._deleteGroup(currentGroup.ID);  
+                        }
+                    }
+                }
+            );
+        },
+
+        _deleteGroup: async function (groupId) {
+            var oView = this.getView();
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+
+            oView.setBusy(true);
+
+            try {
+                var response = await fetch(`/api/groups/${groupId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    var errorData = await response.json();
+                    throw errorData;
+                }
+
+                sap.m.MessageToast.show(oResourceBundle.getText("groupDeletedSuccess"));
+
+                // Reload groups table
+                this._reloadGroupsTable();
+
+                // Close detail page
+                this.handleClose();
+
+                oView.setBusy(false);
+
+            } catch (error) {
+                console.error("Error deleting group:", error);
+                sap.m.MessageToast.show(oResourceBundle.getText("groupDeleteError"));
+                oView.setBusy(false);
+            }
         }
+
 
 
 

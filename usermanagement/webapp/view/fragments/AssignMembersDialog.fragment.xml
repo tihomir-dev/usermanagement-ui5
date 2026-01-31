@@ -1,0 +1,71 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:m="sap.m"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="assignMembersDialog"
+        title="Assign Members to Group"
+        contentWidth="600px"
+    >
+        <m:Table
+            id="assignMembersTable"
+            mode="MultiSelect"
+            inset="false"
+            items="{assignMembersModel>/users}"
+            selectionChange=".onAssignMembersSelectionChange"
+        >
+            <m:columns>
+                <m:Column id="memberCol1">
+                    <m:Text text="{i18n>firstNameCol}" />
+                </m:Column>
+                <m:Column id="memberCol2">
+                    <m:Text text="{i18n>lastNameCol}" />
+                </m:Column>
+                <m:Column id="memberCol3">
+                    <m:Text text="{i18n>emailCol}" />
+                </m:Column>
+                <m:Column id="memberCol4">
+                    <m:Text text="{i18n>loginNameCol}" />
+                </m:Column>
+                <m:Column id="memberCol5">
+                    <m:Text text="{i18n>userIdCol}" />
+                </m:Column>
+            </m:columns>
+
+            <m:items>
+                <m:ColumnListItem 
+                    id="memberItem"
+                    selected="{assignMembersModel>assigned}"
+                >
+                    <m:cells>
+                        <m:Text text="{assignMembersModel>FIRST_NAME}" />
+                        <m:Text text="{assignMembersModel>LAST_NAME}" />
+                        <m:Text text="{assignMembersModel>EMAIL}" />
+                        <m:Text text="{assignMembersModel>LOGIN_NAME}" />
+                        <m:Text text="{assignMembersModel>ID}" />
+                    </m:cells>
+                </m:ColumnListItem>
+            </m:items>
+        </m:Table>
+
+        <beginButton>
+            <m:Button
+                id="assignMembersBtn"
+                text="Assign"
+                type="Emphasized"
+                press=".onAssignMembersConfirm"
+            />
+        </beginButton>
+
+        <endButton>
+            <m:Button
+                id="cancelAssignMembersBtn"
+                text="Cancel"
+                type="Transparent"
+                press=".onAssignMembersCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
