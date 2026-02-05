@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Dialog
+        id="createGroupDialog"
+        title="Create New Group"
+        contentWidth="500px"
+    >
+        <form:SimpleForm
+            id="createGroupForm"
+            layout="ResponsiveGridLayout"
+            labelSpanL="3"
+            labelSpanM="3"
+            columnsL="1"
+            columnsM="1"
+        >
+            <form:content>
+                <Label text="Group Name" required="true" />
+                <Input
+                    id="createGroupName"
+                    value="{createGroupModel>/name}"
+                    required="true"
+                    placeholder="Enter group name"
+                />
+
+                <Label text="Display Name" required="true" />
+                <Input
+                    id="createGroupDisplayName"
+                    value="{createGroupModel>/displayName}"
+                    required="true"
+                    placeholder="Enter display name"
+                />
+
+                <Label text="Description" />
+                <TextArea
+                    id="createGroupDescription"
+                    value="{createGroupModel>/description}"
+                    rows="4"
+                    placeholder="Enter group description"
+                />
+            </form:content>
+        </form:SimpleForm>
+
+        <beginButton>
+            <Button
+                id="createGroupSaveBtn"
+                text="Create"
+                type="Emphasized"
+                press=".onCreateGroupSave"
+            />
+        </beginButton>
+
+        <endButton>
+            <Button
+                id="createGroupCancelBtn"
+                text="Cancel"
+                type="Transparent"
+                press=".onCreateGroupCancel"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

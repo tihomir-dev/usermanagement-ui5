@@ -42,7 +42,7 @@
                     selectionChange=".onUserTypeFilterChange"
                     items="{options>/userTypes}"
                     width="10rem"
-                    placeholder="User Type"
+                    placeholder="{i18n>userTypePlaceholder}"
                 >
                     <core:Item
                         key="{options>key}"
@@ -54,7 +54,7 @@
                     id="countryFilterInput"
                     valueHelpRequest=".onCountryValueHelp"
                     width="10rem"
-                    placeholder="Country"
+                    placeholder="{i18n>countryPlaceholder}"
                     showValueHelp="true"
                     change="onCountryInputChange"
                 />
@@ -70,14 +70,14 @@
                     icon="sap-icon://clear-filter"
                     type="Transparent"
                     press=".onResetFilters"
-                    tooltip="Reset all filters"
+                    tooltip="{i18n>resetFiltersTooltip}"
                 />
                 <OverflowToolbarButton
                     id="createUserBtn"
                     icon="sap-icon://add-employee"
                     type="Transparent"
                     press=".onCreate"
-                    tooltip="Create new user"
+                    tooltip="{i18n>createNewUserTooltip}"
                 />
             </OverflowToolbar>
         </headerToolbar>

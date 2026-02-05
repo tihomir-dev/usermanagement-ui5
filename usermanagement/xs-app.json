@@ -13,6 +13,13 @@
       "service": "sap-approuter-userapi"
     },
     {
+      "source": "^/api/sync(.*)$",
+      "target": "/sync$1",
+      "destination": "apiservice-destination",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
       "source": "^/api/users/sync/?$",
       "target": "/users/sync",
       "destination": "apiservice-destination",

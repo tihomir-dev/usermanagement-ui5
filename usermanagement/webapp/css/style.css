@@ -9,3 +9,26 @@
 .centerAvatar {
     align-self: center;
 }
+.sapMBtn.sapMBtnEmphasized[id="notificationBtn"] {
+    color: white !important;
+    background-color: #e74c3c !important;
+    border-color: #c0392b !important;
+}
+
+.sapMBtn.sapMBtnEmphasized[id="notificationBtn"]:hover {
+    background-color: #c0392b !important;
+}
+
+/* Pulsing animation for notification bell */
+.sapMBtn.sapMBtnEmphasized[id="notificationBtn"] {
+    animation: bellPulse 1.5s infinite;
+}
+
+@keyframes bellPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}

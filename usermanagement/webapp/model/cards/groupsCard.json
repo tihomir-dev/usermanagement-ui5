@@ -5,13 +5,12 @@
   },
   "sap.card": {
     "type": "Object",
-    
     "actions": [
       {
         "type": "Custom",
         "parameters": {
-        "action": "navigateToGroups"
-    }
+          "action": "navigateToGroups"
+        }
       }
     ],
     "data": {
@@ -28,7 +27,7 @@
     "content": {
       "groups": [
         {
-          "title": "Statistics",
+          "title": "",
           "items": [
             {
               "label": "Total Groups",

@@ -31,7 +31,6 @@
                         class="sapUiSmallMarginEnd"
                     />
                 </expandedHeading>
-
                 <snappedHeading>
                     <m:HBox
                         id="hbxo2"
@@ -56,7 +55,6 @@
                         </m:VBox>
                     </m:HBox>
                 </snappedHeading>
-
                 <navigationActions>
                     <m:OverflowToolbarButton
                         type="Transparent"
@@ -74,7 +72,6 @@
                         tooltip="{i18n>exitScreenTip}"
                         visible="{userModel>/actionButtonsInfo/midColumn/exitFullScreen}"
                     />
-
                     <m:OverflowToolbarButton
                         id="oflbuttn"
                         type="Transparent"
@@ -84,7 +81,6 @@
                         visible="{userModel>/actionButtonsInfo/midColumn/closeColumn}"
                     />
                 </navigationActions>
-
                 <actions>
                     <m:Button
                         id="editButton"
@@ -116,7 +112,6 @@
                 </actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
-
         <headerContent>
             <m:FlexBox
                 id="fxbox1"
@@ -155,7 +150,6 @@
                 </m:VBox>
             </m:FlexBox>
         </headerContent>
-
         <sections>
             <ObjectPageSection
                 id="objpg1"
@@ -185,7 +179,6 @@
                                         value="{userModel>/editUser/ID}"
                                         editable="false"
                                     />
-
                                     <m:Label
                                         id="label2"
                                         text="{i18n>statusCol}"
@@ -202,7 +195,6 @@
                                             text="{options>text}"
                                         />
                                     </m:ComboBox>
-
                                     <m:Label
                                         id="label3"
                                         text="{i18n>userTypeLabel}"
@@ -219,7 +211,6 @@
                                             text="{options>text}"
                                         />
                                     </m:ComboBox>
-
                                     <m:Label
                                         id="label5"
                                         text="{i18n>validFrom}"
@@ -229,7 +220,6 @@
                                         value="{userModel>/editUser/VALID_FROM}"
                                         editable="{userModel>/isEditMode}"
                                     />
-
                                     <m:Label
                                         id="label6"
                                         text="{i18n>validTo}"
@@ -239,7 +229,6 @@
                                         value="{userModel>/editUser/VALID_TO}"
                                         editable="{userModel>/isEditMode}"
                                     />
-
                                     <m:Label
                                         id="label7"
                                         text="{i18n>city}"
@@ -249,7 +238,6 @@
                                         value="{userModel>/editUser/CITY}"
                                         editable="{userModel>/isEditMode}"
                                     />
-
                                     <m:Label
                                         id="label9"
                                         text="{i18n>region}"
@@ -262,7 +250,6 @@
                                         valueHelpRequest="onCountryValueHelp"
                                         placeholder="Select country..."
                                     />
-
                                     <m:Label
                                         id="label10"
                                         text="{i18n>company}"
@@ -272,7 +259,6 @@
                                         value="{userModel>/editUser/COMPANY}"
                                         editable="{userModel>/isEditMode}"
                                     />
-
                                     <m:Label
                                         id="labe11"
                                         text="{i18n>firstNameCol}"
@@ -282,7 +268,6 @@
                                         value="{userModel>/editUser/FIRST_NAME}"
                                         editable="{userModel>/isEditMode}"
                                     />
-
                                     <m:Label
                                         id="label44"
                                         text="{i18n>lastNameCol}"
@@ -293,7 +278,6 @@
                                         editable="{userModel>/isEditMode}"
                                         required="true"
                                     />
-
                                     <m:Label
                                         id="labee11"
                                         text="{i18n>loginNameCol}"
@@ -304,7 +288,6 @@
                                         editable="{userModel>/isEditMode}"
                                         required="true"
                                     />
-
                                     <m:Label
                                         id="label24"
                                         text="{i18n>emailCol}"
@@ -343,19 +326,19 @@
                                         />
                                         <m:Button
                                             id="assignGroup"
-                                            text="Assign"
+                                            text="{i18n>assignButton}"
                                             type="Emphasized"
                                             press=".onAssign"
-                                            tooltip="Assign groups to user"
+                                            tooltip="{i18n>assignGroupsTooltip}"
+                                            enabled="{= ${userModel>/groupsSelected} === false}"
                                         />
                                         <m:Button
                                             id="unAssignGroup"
-                                            text="Unassign"
+                                            text="{i18n>unassignButton}"
                                             type="Transparent"
                                             press=".onUnassign"
-                                            tooltip="Unassign groups from user"
+                                            tooltip="{i18n>unassignGroupsTooltip}"
                                             enabled="{userModel>/groupsSelected}"
-                                            
                                         />
                                     </m:OverflowToolbar>
                                 </m:headerToolbar>
@@ -374,7 +357,6 @@
                                         />
                                     </m:Column>
                                 </m:columns>
-
                                 <m:items>
                                     <m:ColumnListItem id="groupItem">
                                         <m:cells>
