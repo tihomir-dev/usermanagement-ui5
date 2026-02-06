@@ -14,7 +14,6 @@ sap.ui.define([
 
     return Controller.extend("com.customer.usermanagement.usermanagement.controller.DetailUsers", {
         formatter: Formatter,
-
         onInit() {
             var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             var oRouter = this.getOwnerComponent().getRouter();
@@ -52,7 +51,6 @@ sap.ui.define([
                 const layout = oEvent.getParameter("arguments").layout;
                 const userId = oEvent.getParameter("arguments").userId;
                 this._resetButtonStates();
-
                 var layoutModel = this.getOwnerComponent().getModel("layout");
                 if (layoutModel) {
                     layoutModel.setProperty("/layout", layout);
@@ -499,7 +497,6 @@ sap.ui.define([
                 sap.m.MessageToast.show("Please select groups to unassign");
                 return;
             }
-
             var selectedGroupIds = selectedItems.map(item =>
                 item.getBindingContext("userModel").getProperty("ID")
             );

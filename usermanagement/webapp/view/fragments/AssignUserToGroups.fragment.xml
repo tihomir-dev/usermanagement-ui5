@@ -6,7 +6,7 @@
 >
     <Dialog
         id="assignGroupsToUserDialog"
-        title="Assign Groups to User"
+        title="{i18n>assignGroupsToUserTitle}"
         contentWidth="600px"
     >
         <m:Table
@@ -15,7 +15,6 @@
             inset="false"
             items="{assignGroupsModel>/groups}"
             selectionChange=".onAssignGroupsSelectionChange"
-            
         >
             <m:columns>
                 <m:Column id="assignGroupCol1">
@@ -28,11 +27,8 @@
                     <m:Text text="{i18n>groupDescriptionCol}" />
                 </m:Column>
             </m:columns>
-
             <m:items>
-                <m:ColumnListItem 
-                    selected="{assignGroupsModel>assigned}"
-                >
+                <m:ColumnListItem selected="{assignGroupsModel>assigned}">
                     <m:cells>
                         <m:Text text="{assignGroupsModel>NAME}" />
                         <m:Text text="{assignGroupsModel>DISPLAY_NAME}" />
@@ -41,20 +37,18 @@
                 </m:ColumnListItem>
             </m:items>
         </m:Table>
-
         <beginButton>
             <m:Button
                 id="assignBtn"
-                text="Assign"
+                text="{i18n>assignButton}"
                 type="Emphasized"
                 press=".onAssignGroupsConfirm"
             />
         </beginButton>
-
         <endButton>
             <m:Button
                 id="cancelAssignBtn"
-                text="Cancel"
+                text="{i18n>cancel}"
                 type="Transparent"
                 press=".onAssignGroupsCancel"
             />

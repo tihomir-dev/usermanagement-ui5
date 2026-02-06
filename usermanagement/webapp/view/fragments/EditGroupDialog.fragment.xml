@@ -17,28 +17,31 @@
             columnsM="1"
         >
             <form:content>
-                <Label text="Group ID" />
+                <Label text="{i18n>groupIdCol}" />
                 <Input
                     id="editGroupId"
                     value="{editGroupModel>/id}"
                     editable="false"
                 />
-
-                <Label text="Group Name" required="true" />
+                <Label
+                    text="{i18n>groupNameCol}"
+                    required="true"
+                />
                 <Input
                     id="editGroupName"
                     value="{editGroupModel>/name}"
                     editable="false"
                 />
-
-                <Label text="Display Name" required="true" />
+                <Label
+                    text="{i18n>groupDisplayName}"
+                    required="true"
+                />
                 <Input
                     id="editGroupDisplayName"
                     value="{editGroupModel>/displayName}"
                     required="true"
                 />
-
-                <Label text="Description" />
+                <Label text="{i18n>groupDescriptionCol}" />
                 <TextArea
                     id="editGroupDescription"
                     value="{editGroupModel>/description}"
@@ -46,20 +49,18 @@
                 />
             </form:content>
         </form:SimpleForm>
-
         <beginButton>
             <Button
                 id="editGroupSaveBtn"
-                text="Save"
+                text="{i18n>save}"
                 type="Emphasized"
                 press=".onEditGroupSave"
             />
         </beginButton>
-
         <endButton>
             <Button
                 id="editGroupCancelBtn"
-                text="Cancel"
+                text="{i18n>cancel}"
                 type="Transparent"
                 press=".onEditGroupCancel"
             />

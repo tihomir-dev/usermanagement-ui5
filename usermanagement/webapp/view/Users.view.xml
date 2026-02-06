@@ -23,20 +23,18 @@
         <headerToolbar>
             <OverflowToolbar id="usersToolbar">
                 <ToolbarSpacer id="toolbarspacer" />
-
                 <ComboBox
                     id="statusFilterCombo"
                     selectionChange=".onStatusFilterChange"
                     items="{options>/statuses}"
                     width="10rem"
-                    placeholder="Status"
+                    placeholder="{i18n>statusCol}"
                 >
                     <core:Item
                         key="{options>key}"
                         text="{options>text}"
                     />
                 </ComboBox>
-
                 <ComboBox
                     id="userTypeFilterCombo"
                     selectionChange=".onUserTypeFilterChange"
@@ -49,7 +47,6 @@
                         text="{options>text}"
                     />
                 </ComboBox>
-
                 <Input
                     id="countryFilterInput"
                     valueHelpRequest=".onCountryValueHelp"
@@ -81,7 +78,6 @@
                 />
             </OverflowToolbar>
         </headerToolbar>
-
         <columns>
             <Column
                 id="col1"
@@ -119,7 +115,6 @@
                 <Text text="{i18n>statusCol}" />
             </Column>
         </columns>
-
         <items>
             <ColumnListItem
                 id="userListItem"

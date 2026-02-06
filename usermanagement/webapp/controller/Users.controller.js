@@ -14,7 +14,6 @@ sap.ui.define([
         onInit() {
             var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             this.oRouter = this.getOwnerComponent().getRouter();
-
             var allUsersModel = new JSONModel({
                 users: [],
                 total: 0,
@@ -41,10 +40,7 @@ sap.ui.define([
             try {
                 var allUsersModel = this.getView().getModel("allUsersModel");
                 sap.ui.core.BusyIndicator.show(0);
-
-
                 var response = await fetch(`/api/users${queryString}`);
-
                 if (!response.ok) {
                     var sErrorMessage = oResourceBundle.getText("httpErrorMessage", [response.status]);
                     throw new Error(sErrorMessage);
@@ -107,7 +103,6 @@ sap.ui.define([
                 );
                 oView.addDependent(this.fragments.CountriesDialog);
             }
-
             this._oCountryInput = oInput;
             this.fragments.CountriesDialog.open();
         },
@@ -211,10 +206,8 @@ sap.ui.define([
             var createUserModel = this.getView().getModel("createUserModel");
             var userData = createUserModel.getData();
             var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-
             // Validate required fields
             var aInvalidFields = [];
-
             if (!userData.firstName) aInvalidFields.push("createFirstNameInput");
             if (!userData.lastName) aInvalidFields.push("createLastNameInput");
             if (!userData.loginName) aInvalidFields.push("createLoginNameInput");

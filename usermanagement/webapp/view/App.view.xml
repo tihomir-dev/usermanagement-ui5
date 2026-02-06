@@ -33,13 +33,12 @@
                     type="Transparent"
                     text="{i18n>settingsButton}"
                     press="onSettingsPress"
-                    
                 />
                 <Button
                     id="notificationBtn"
                     icon="sap-icon://bell"
                     type="Transparent"
-                    tooltip="View notifications"
+                    tooltip="{i18n>viewNotificationsTooltip}"
                     press="onNotificationPress"
                 />
                 <tnt:ToolHeaderUtilitySeparator />

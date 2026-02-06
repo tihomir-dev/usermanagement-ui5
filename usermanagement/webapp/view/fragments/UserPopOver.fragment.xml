@@ -1,25 +1,34 @@
 <core:FragmentDefinition
-	xmlns="sap.m"
-	xmlns:core="sap.ui.core">
-	<Popover
-		id="myPopover"
-		title="{userModel>/name}"
-		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer centeredTitle"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Popover
+        id="myPopover"
+        title="{userModel>/name}"
+        class="sapUiResponsivePadding--header sapUiResponsivePadding--footer centeredTitle"
         contentHeight="auto"
         contentWidth="230px"
-		placement="Bottom"
-		initialFocus="emailButton">
-		<VBox id="dfdsf" class="sapUiSmallMargin">
-			<Text id="dsfsfdsf" text="{userModel>/email}" class="sapUiMediumMarginBottom"/>
-			<Button 
-				id="logoutButton"
-				text="Sign Out"
-				type="Transparent"
-				icon="sap-icon://log"
-				width="auto"
-				press=".onLogout"
-				class="sapUiMediumMarginTop"/>
-		</VBox>
-		
-	</Popover>
+        placement="Bottom"
+        initialFocus="emailButton"
+    >
+        <VBox
+            id="bvUsP"
+            class="sapUiSmallMargin"
+        >
+            <Text
+                id="txtUsPop"
+                text="{userModel>/email}"
+                class="sapUiMediumMarginBottom"
+            />
+            <Button
+                id="logoutButton"
+                text="{i18n>signOutButton}"
+                type="Transparent"
+                icon="sap-icon://log"
+                width="auto"
+                press=".onLogout"
+                class="sapUiMediumMarginTop"
+            />
+        </VBox>
+    </Popover>
 </core:FragmentDefinition>

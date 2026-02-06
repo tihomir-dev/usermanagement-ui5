@@ -31,7 +31,6 @@
                         class="sapUiSmallMarginEnd"
                     />
                 </expandedHeading>
-
                 <snappedHeading>
                     <m:HBox
                         id="groupHbxo2"
@@ -56,7 +55,6 @@
                         </m:VBox>
                     </m:HBox>
                 </snappedHeading>
-
                 <navigationActions>
                     <m:OverflowToolbarButton
                         type="Transparent"
@@ -74,7 +72,6 @@
                         tooltip="{i18n>exitScreenTip}"
                         visible="{groupsModel>/actionButtonsInfo/midColumn/exitFullScreen}"
                     />
-
                     <m:OverflowToolbarButton
                         id="oflbuttnGroup"
                         type="Transparent"
@@ -84,7 +81,6 @@
                         visible="{groupsModel>/actionButtonsInfo/midColumn/closeColumn}"
                     />
                 </navigationActions>
-
                 <actions>
                     <m:Button
                         id="editButtonGroup"
@@ -93,13 +89,6 @@
                         press="handleEdit"
                         visible="{= !${groupsModel>/isEditMode} &amp;&amp; ${groupsModel>/selectedSection} !== '__xmlview2--objPageSection2'}"
                     />
-                    <!-- <m:Button
-                        id="saveButtonGroup"
-                        text="{i18n>save}"
-                        type="Emphasized"
-                        press="handleSave"
-                        visible="{groupsModel>/isEditMode}"
-                    /> -->
                     <m:Button
                         id="cancelButtonGroup"
                         text="{i18n>cancel}"
@@ -116,7 +105,6 @@
                 </actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
-
         <headerContent>
             <m:FlexBox
                 id="fxbox10"
@@ -140,7 +128,6 @@
                 </m:VBox>
             </m:FlexBox>
         </headerContent>
-
         <sections>
             <ObjectPageSection
                 id="objPageSectionGroupMembers"
@@ -165,18 +152,18 @@
                                         />
                                         <m:Button
                                             id="assignMembers"
-                                            text="Assign"
+                                            text="{i18n>assignButton}"
                                             type="Emphasized"
                                             press=".onAssignMembers"
-                                            tooltip="Assign Memebrs to Group"
+                                            tooltip="{i18n>assignMembersToGroupTooltip}"
                                             enabled="{= ${groupsModel>/groupsSelected} === false}"
                                         />
                                         <m:Button
                                             id="unAssignGroupMembers"
-                                            text="Unassign"
+                                            text="{i18n>unassignButton}"
                                             type="Transparent"
                                             press=".onUnAssignMembers"
-                                            tooltip="Unassign Members from Group"
+                                            tooltip="{i18n>unassignMembersFromGroupTooltip}"
                                             enabled="{groupsModel>/groupsSelected}"
                                         />
                                     </m:OverflowToolbar>
@@ -198,7 +185,6 @@
                                         <m:Text text="{i18n>userIdCol}" />
                                     </m:Column>
                                 </m:columns>
-
                                 <m:items>
                                     <m:ColumnListItem id="userItem1">
                                         <m:cells>

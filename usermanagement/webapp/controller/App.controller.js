@@ -230,6 +230,9 @@ sap.ui.define([
             if (this.notificationInterval) {
                 clearInterval(this.notificationInterval);
             }
-        }
+        },
+        onLogout: function () {
+            window.location.href = "/do/logout";
+        },
     });
 });

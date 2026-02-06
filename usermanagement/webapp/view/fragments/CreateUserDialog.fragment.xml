@@ -3,9 +3,9 @@
     xmlns:core="sap.ui.core"
     xmlns:form="sap.ui.layout.form"
 >
-    <Dialog 
-        id="createUserDialog" 
-        title="Create New User"
+    <Dialog
+        id="createUserDialog"
+        tooltip="{i18n>createNewUserTooltip}"
         contentWidth="600px"
     >
         <form:SimpleForm
@@ -19,85 +19,91 @@
             columnsM="1"
         >
             <form:content>
-
-                <Label text="First Name" required="true" />
+                <Label
+                    text="{i18n>firstNameCol}"
+                    required="true"
+                />
                 <Input
                     id="createFirstNameInput"
                     value="{createUserModel>/firstName}"
-                    placeholder="Enter first name"
+                    placeholder="{i18n>enterFirstNamePlaceholder}"
                     required="true"
                 />
-
-
-                <Label text="Last Name" required="true" />
+                <Label
+                    text="{i18n>lastNameCol}"
+                    required="true"
+                />
                 <Input
                     id="createLastNameInput"
                     value="{createUserModel>/lastName}"
-                    placeholder="Enter last name"
+                    placeholder="{i18n>enterLastNamePlaceholder}"
                     required="true"
                 />
-
-                <Label text="Login Name" required="true" />
+                <Label
+                    text="{i18n>loginNameCol}"
+                    required="true"
+                />
                 <Input
                     id="createLoginNameInput"
                     value="{createUserModel>/loginName}"
-                    placeholder="Enter login name"
+                    placeholder="{i18n>enterLoginNamePlaceholder}"
                     required="true"
                 />
-
-
-                <Label text="Email" required="true" />
+                <Label
+                    text="{i18n>emailCol}"
+                    required="true"
+                />
                 <Input
                     id="createEmailInput"
                     value="{createUserModel>/email}"
                     type="Email"
-                    placeholder="Enter email"
+                    placeholder="{i18n>enterEmailPlaceholder}"
                     required="true"
                 />
-
-                <Label text="User Type" required="true" />
+                <Label
+                    text="{i18n>userTypeLabel}"
+                    required="true"
+                />
                 <ComboBox
                     id="createUserTypeCombo"
                     selectedKey="{createUserModel>/userType}"
                     items="{options>/userTypes}"
                     required="true"
                 >
-                    <core:Item key="{options>key}" text="{options>text}" />
+                    <core:Item
+                        key="{options>key}"
+                        text="{options>text}"
+                    />
                 </ComboBox>
-
-
-                <Label text="Company" />
+                <Label text="{i18n>company}" />
                 <Input
                     id="createCompanyInput"
                     value="{createUserModel>/company}"
-                    placeholder="Enter company"
+                    placeholder="{i18n>enterCompanyPlaceholder}"
                 />
-
-                <Label text="Country" />
+                <Label text="{i18n>countryPlaceholder}" />
                 <Input
                     id="createCountryInput"
                     value="{createUserModel>/country}"
                     valueHelpRequest=".onCountryValueHelp"
                     showValueHelp="true"
-                    placeholder="Select country"
+                    placeholder="{i18n>selectCountryPlaceholder}"
                 />
-
-                <Label text="City" />
+                <Label text="{i18n>city}" />
                 <Input
                     id="createCityInput"
                     value="{createUserModel>/city}"
-                    placeholder="Enter city"
+                    placeholder="{i18n>enterCityPlaceholder}"
                 />
 
-                <Label text="Valid From" />
+                <Label text="{i18n>validFrom}" />
                 <DatePicker
                     id="createValidFromInput"
                     value="{createUserModel>/validFrom}"
                     valueFormat="yyyy-MM-dd"
                     displayFormat="short"
                 />
-
-                <Label text="Valid To" />
+                <Label text="{i18n>validTo}" />
                 <DatePicker
                     id="createValidToInput"
                     value="{createUserModel>/validTo}"
@@ -106,20 +112,18 @@
                 />
             </form:content>
         </form:SimpleForm>
-
         <beginButton>
             <Button
                 id="createUserSaveBtn"
-                text="Create"
+                text="{i18n>createButton}"
                 type="Emphasized"
                 press=".onCreateUserSave"
             />
         </beginButton>
-
         <endButton>
             <Button
                 id="createUserCancelBtn"
-                text="Cancel"
+                text="{i18n>cancel}"
                 press=".onCreateUserCancel"
             />
         </endButton>

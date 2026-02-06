@@ -134,7 +134,7 @@
                     />
                 </m:VBox>
                 <m:VBox
-                    id="sdsdsdsd"
+                    id="vbId3"
                     justifyContent="Center"
                     class="sapUiSmallMarginEnd"
                 >
@@ -143,7 +143,7 @@
                         text="{i18n>statusCol}"
                     />
                     <m:ObjectStatus
-                        id="sdsdsdsdsd"
+                        id="objSt"
                         text="{userModel>/currentUser/STATUS}"
                         state="{= ${userModel>/currentUser/STATUS} === 'ACTIVE' ? 'Success' : 'Error'}"
                     />

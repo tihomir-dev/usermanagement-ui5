@@ -374,7 +374,7 @@ sap.ui.define([
                 console.log("Members unassigned:", result);
                 sap.m.MessageToast.show(oResourceBundle.getText("membersUnassignedSuccess"));
                 this._loadGroupMembers(currentGroup.ID);
-                oTable.clearSelection();
+                oTable.removeSelections(true);
                 groupsModel.setProperty("/groupsSelected", false);
             } catch (error) {
                 console.error("Error unassigning members:", error);

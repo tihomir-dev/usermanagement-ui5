@@ -5,7 +5,7 @@
 >
     <Dialog
         id="createGroupDialog"
-        title="Create New Group"
+        title="{i18n>createNewGroupTitle}"
         contentWidth="500px"
     >
         <form:SimpleForm
@@ -17,45 +17,47 @@
             columnsM="1"
         >
             <form:content>
-                <Label text="Group Name" required="true" />
+                <Label
+                    text="{i18n>groupNameCol}"
+                    required="true"
+                />
                 <Input
                     id="createGroupName"
                     value="{createGroupModel>/name}"
                     required="true"
-                    placeholder="Enter group name"
+                    placeholder="{i18n>enterGroupNamePlaceholder}"
                 />
-
-                <Label text="Display Name" required="true" />
+                <Label
+                    text="{i18n>groupDisplayName}"
+                    required="true"
+                />
                 <Input
                     id="createGroupDisplayName"
                     value="{createGroupModel>/displayName}"
                     required="true"
-                    placeholder="Enter display name"
+                    placeholder="{i18n>enterDisplayNamePlaceholder}"
                 />
-
-                <Label text="Description" />
+                <Label text="{i18n>groupDescriptionCol}" />
                 <TextArea
                     id="createGroupDescription"
                     value="{createGroupModel>/description}"
                     rows="4"
-                    placeholder="Enter group description"
+                    placeholder="{i18n>enterGroupDescriptionPlaceholder}"
                 />
             </form:content>
         </form:SimpleForm>
-
         <beginButton>
             <Button
                 id="createGroupSaveBtn"
-                text="Create"
+                text="{i18n>createButton}"
                 type="Emphasized"
                 press=".onCreateGroupSave"
             />
         </beginButton>
-
         <endButton>
             <Button
                 id="createGroupCancelBtn"
-                text="Cancel"
+                text="{i18n>cancel}"
                 type="Transparent"
                 press=".onCreateGroupCancel"
             />

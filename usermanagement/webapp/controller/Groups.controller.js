@@ -110,10 +110,15 @@ sap.ui.define([
             var groupData = createGroupModel.getData();
             var groupsModel = this.getView().getModel("groupsModel");
             var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-            if (!groupData.name || !groupData.displayName) {
-                sap.m.MessageToast.show(oResourceBundle.getText("requiredFieldsError"));
+            var aInvalidFields = [];
+
+            if (!groupData.name) aInvalidFields.push("createGroupName");
+            if (!groupData.displayName) aInvalidFields.push("createGroupDisplayName");
+            if (aInvalidFields.length > 0) {
+                this._highlightInvalidGroupFields(aInvalidFields);
                 return;
             }
+            this._clearGroupFieldHighlighting();
             try {
                 var response = await fetch('/api/groups', {
                     method: 'POST',
@@ -132,7 +137,7 @@ sap.ui.define([
                     var errorData = await response.json();
                     throw errorData;
                 }
-                var result = await response.json();
+                //var result = await response.json();
                 sap.m.MessageToast.show(oResourceBundle.getText("groupCreatedSuccess"));
                 this.loadAllGroups("");
                 this._oCreateGroupDialog.close();
@@ -141,6 +146,44 @@ sap.ui.define([
                 oView.setBusy(false);
             }
         },
+        _highlightInvalidGroupFields: function (aFieldIds) {
+            var oView = this.getView();
+            var oDialog = this._oCreateGroupDialog;
+            var aAllFieldIds = ["createGroupName", "createGroupDisplayName"];
+
+            // First, clear highlighting from all fields
+            aAllFieldIds.forEach(function (sFieldId) {
+                var oControl = oView.byId(sFieldId);
+                if (oControl) {
+                    oControl.setValueState("None");
+                    oControl.setValueStateText("");
+                }
+            });
+
+            // Then highlight only the invalid fields
+            aFieldIds.forEach(function (sFieldId) {
+                var oControl = oView.byId(sFieldId);
+                if (oControl) {
+                    oControl.setValueState("Error");
+                    oControl.setValueStateText("This field is required");
+                }
+            });
+        },
+
+        _clearGroupFieldHighlighting: function () {
+            var oView = this.getView();
+            var oDialog = this._oCreateGroupDialog;
+            var aFieldIds = ["createGroupNameInput", "createGroupDisplayNameInput"];
+
+            aFieldIds.forEach(function (sFieldId) {
+                var oControl = oView.byId(sFieldId);
+                if (oControl) {
+                    oControl.setValueState("None");
+                    oControl.setValueStateText("");
+                }
+            });
+        },
+
         onCreateGroupCancel: function () {
             this._oCreateGroupDialog.close();
             this._oCreateGroupDialog.destroy();

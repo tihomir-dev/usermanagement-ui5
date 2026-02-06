@@ -26,8 +26,6 @@ sap.ui.define([
             sap.ui.getCore().getEventBus().subscribe("GroupChannel", "ReloadGroups", function (channel, event, data) {
                 this._loadGroupsStats();
             }.bind(this));
-
-
         },
         onUserCardReady: function (oEvent) {
             var oCard = oEvent.getSource();
@@ -38,16 +36,14 @@ sap.ui.define([
             this._loadGroupsStats();
         },
         _loadUsersStats: async function () {
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             try {
                 var response = await fetch('/api/users?startIndex=1&count=1');
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
-
                 var totalData = await response.json();
                 var total = totalData.total;
-
-
                 var oCard = this.getView().byId("userCardId");
                 if (oCard) {
                     oCard.setModel(new JSONModel({
@@ -56,18 +52,18 @@ sap.ui.define([
                 }
             } catch (error) {
                 console.error("Error loading users stats:", error);
+                MessageToast.show(oResourceBundle.getText("errorLoadingUsersStats"));
             }
         },
         _loadGroupsStats: async function () {
+            var oResourceBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
             try {
                 var response = await fetch('/api/groups?startIndex=1&count=1');
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
-
                 var totalData = await response.json();
                 var totalGroups = totalData.totalResults;
-
                 var oCard = this.getView().byId("groupCardId");
                 if (oCard) {
                     oCard.setModel(new JSONModel({
@@ -76,16 +72,15 @@ sap.ui.define([
                 }
             } catch (error) {
                 console.error("Error loading groups stats:", error);
+                MessageToast.show(oResourceBundle.getText("errorLoadingGroupsStats"));
             }
         },
         onCardAction: function (oEvent) {
             const oParameters = oEvent.getParameter("parameters");
             const sAction = oParameters.action;
-
             // Get the App view 
             var oAppView = this.getOwnerComponent().getRootControl();
             var userModel = oAppView.getModel("userModel");
-
             if (userModel) {
                 if (sAction === "navigateToUsers") {
                     userModel.setProperty("/selectedKey", "users");
@@ -93,14 +88,11 @@ sap.ui.define([
                     userModel.setProperty("/selectedKey", "groups");
                 }
             }
-
             if (sAction === "navigateToUsers") {
                 this.getOwnerComponent().getRouter().navTo("users");
             } else if (sAction === "navigateToGroups") {
                 this.getOwnerComponent().getRouter().navTo("groups");
             }
         }
-
-
     });
 });

@@ -6,7 +6,7 @@
 >
     <Dialog
         id="assignMembersDialog"
-        title="Assign Members to Group"
+        title="{i18n>assignMembersToGroupTitle}"
         contentWidth="600px"
     >
         <m:Table
@@ -33,9 +33,8 @@
                     <m:Text text="{i18n>userIdCol}" />
                 </m:Column>
             </m:columns>
-
             <m:items>
-                <m:ColumnListItem 
+                <m:ColumnListItem
                     id="memberItem"
                     selected="{assignMembersModel>assigned}"
                 >
@@ -49,20 +48,18 @@
                 </m:ColumnListItem>
             </m:items>
         </m:Table>
-
         <beginButton>
             <m:Button
                 id="assignMembersBtn"
-                text="Assign"
+                text="{i18n>assignButton}"
                 type="Emphasized"
                 press=".onAssignMembersConfirm"
             />
         </beginButton>
-
         <endButton>
             <m:Button
                 id="cancelAssignMembersBtn"
-                text="Cancel"
+                text="{i18n>cancel}"
                 type="Transparent"
                 press=".onAssignMembersCancel"
             />
